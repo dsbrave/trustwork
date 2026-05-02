@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --surface: #f7f7f7;
+    --surface-card: #ffffff;
+    --border-subtle: #e4ebe7;
+    --text-primary: #001e00;
+    --accent-gum: #108a00;
+    --accent-ocean: #0c4a6e;
+  }
+}
+
+/* Smooth scroll for in-page anchors */
+html {
+  scroll-behavior: smooth;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}

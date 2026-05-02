@@ -1,0 +1,319 @@
+// TrustWork Australia — PostgreSQL (Neon / Supabase)
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               String    @id @default(cuid())
+  email            String    @unique
+  password         String? // hashed; null when OAuth-only
+  name             String
+  role             Role      @default(WORKER)
+  verified         Boolean   @default(false) // platform-level verification flag
+  stripeCustomerId String?
+  createdAt        DateTime  @default(now())
+
+  workerProfile   WorkerProfile?
+  employerProfile EmployerProfile?
+  jobsPosted      Job[]        @relation("EmployerJobs")
+  applications    Application[] @relation("WorkerApplications")
+  workSessions    WorkSession[] @relation("WorkerSessions")
+  wallet          Wallet?
+  disputesOpened  Dispute[]    @relation("DisputeOpener")
+  accounts        Account[]
+  sessions        Session[]
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model WorkerProfile {
+  id                 String      @id @default(cuid())
+  userId             String      @unique
+  countryOfOrigin    String
+  visaStatus         VisaStatus
+  areasOfInterest    String[]    @default([])
+  phoneNumber        String?
+  identityVerified   Boolean     @default(false)
+  identityDocument   String?
+  selfieUrl          String?
+
+  user                    User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  professionalProfiles    ProfessionalProfile[]
+  certifications          Certification[]
+}
+
+model Certification {
+  id                String        @id @default(cuid())
+  workerProfileId   String
+  name              String
+  acquired          Boolean       @default(false)
+
+  workerProfile WorkerProfile @relation(fields: [workerProfileId], references: [id], onDelete: Cascade)
+}
+
+model ProfessionalProfile {
+  id              String   @id @default(cuid())
+  workerId        String
+  title           String
+  skills          String[]
+  experienceYears Int
+  hourlyRate      Float?
+  availability    Json
+  whiteCard       Boolean  @default(false)
+  rsa             Boolean  @default(false)
+  rating          Float    @default(0)
+
+  worker        WorkerProfile @relation(fields: [workerId], references: [id], onDelete: Cascade)
+  applications  Application[]
+}
+
+model EmployerProfile {
+  id          String  @id @default(cuid())
+  userId      String  @unique
+  companyName String
+  abn         String
+  verified    Boolean @default(false)
+  trustScore  Int     @default(70)
+  address     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Job {
+  id                     String       @id @default(cuid())
+  employerId             String
+  title                  String
+  description            String
+  location               Json
+  type                   JobType
+  salary                 Float
+  salaryType             SalaryType
+  hoursPerWeek           Int?
+  visaRequired           VisaStatus[]
+  whiteCardRequired      Boolean      @default(false)
+  rsaRequired            Boolean      @default(false)
+  sponsorshipAvailable   Boolean      @default(false)
+  fundedAmount           Float        @default(0)
+  cardEnabled            Boolean      @default(false)
+  cardLimit              Float?
+  status                 JobStatus    @default(DRAFT)
+  geofenceRadiusM        Int          @default(100)
+  requireCheckoutSelfie  Boolean      @default(true)
+
+  employer         User              @relation("EmployerJobs", fields: [employerId], references: [id], onDelete: Cascade)
+  applications     Application[]
+  workSessions     WorkSession[]
+  cardTransactions CardTransaction[]
+  disputes         Dispute[]
+}
+
+model Application {
+  id          String              @id @default(cuid())
+  jobId       String
+  workerId    String
+  profileId   String
+  status      ApplicationStatus   @default(PENDING)
+  coverLetter String?
+  appliedAt   DateTime            @default(now())
+
+  job           Job                 @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  worker        User                @relation("WorkerApplications", fields: [workerId], references: [id], onDelete: Cascade)
+  profile       ProfessionalProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  workSessions  WorkSession[]
+}
+
+model WorkSession {
+  id               String         @id @default(cuid())
+  jobId            String
+  workerId         String
+  applicationId    String
+  checkInTime      DateTime
+  checkInLocation  Json
+  checkInSelfie    String?
+  breaks           Json           @default("[]")
+  checkOutTime     DateTime?
+  checkOutLocation Json?
+  checkOutSelfie   String?
+  completionPhoto  String?
+  totalMinutes     Int?
+  status           SessionStatus  @default(IN_PROGRESS)
+  lastActivityAt   DateTime?
+
+  job          Job         @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  worker       User        @relation("WorkerSessions", fields: [workerId], references: [id], onDelete: Cascade)
+  application  Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+}
+
+model CardTransaction {
+  id                   String                @id @default(cuid())
+  jobId                String
+  workerId             String
+  employerId           String
+  amount               Float
+  category             CardCategory
+  receiptPhoto         String
+  responsibleParty     ResponsibleParty
+  status               CardTransactionStatus @default(PENDING_EMPLOYER)
+  employerApprovedAt   DateTime?
+  workerNotes          String?
+  employerRejectReason String?
+
+  job Job @relation(fields: [jobId], references: [id], onDelete: Cascade)
+}
+
+model Wallet {
+  id               String @id @default(cuid())
+  userId           String @unique
+  availableBalance Float  @default(0)
+  escrowBalance    Float  @default(0)
+
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions Transaction[]
+}
+
+model Transaction {
+  id                    String          @id @default(cuid())
+  walletId              String
+  amount                Float
+  type                  TransactionType
+  status                String
+  stripePaymentIntentId String?
+  createdAt             DateTime        @default(now())
+
+  wallet Wallet @relation(fields: [walletId], references: [id], onDelete: Cascade)
+}
+
+model Dispute {
+  id         String        @id @default(cuid())
+  jobId      String
+  openedBy   String
+  reason     String
+  evidence   Json
+  status     DisputeStatus @default(OPEN)
+  resolution String?
+  createdAt  DateTime      @default(now())
+  resolvedAt DateTime?
+
+  job    Job  @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  opener User @relation("DisputeOpener", fields: [openedBy], references: [id], onDelete: Cascade)
+}
+
+enum Role {
+  WORKER
+  EMPLOYER
+  ADMIN
+}
+
+enum VisaStatus {
+  CITIZEN
+  PR
+  STUDENT_VISA
+  WORKING_HOLIDAY
+  OTHER
+}
+
+enum JobType {
+  PART_TIME
+  FULL_TIME
+  CASUAL
+  SPONSORSHIP
+}
+
+enum SalaryType {
+  HOURLY
+  FIXED
+}
+
+enum JobStatus {
+  DRAFT
+  FUNDED
+  ACTIVE
+  COMPLETED
+  CANCELLED
+}
+
+enum ApplicationStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  WITHDRAWN
+}
+
+enum SessionStatus {
+  IN_PROGRESS
+  COMPLETED
+  AUTO_CHECKED_OUT
+}
+
+enum CardCategory {
+  EPI
+  MATERIAL
+  TRANSPORT
+  CERTIFICATION
+}
+
+enum ResponsibleParty {
+  WORKER
+  EMPLOYER
+}
+
+enum CardTransactionStatus {
+  PENDING_EMPLOYER
+  PENDING_JOB_COMPLETION
+  SETTLED
+  REJECTED
+}
+
+enum TransactionType {
+  DEPOSIT
+  WITHDRAWAL
+  PAYMENT_RECEIVED
+  ESCROW_HELD
+  ESCROW_RELEASED
+}
+
+enum DisputeStatus {
+  OPEN
+  MEDIATION
+  EVIDENCE
+  ARBITRATION
+  RESOLVED
+}
