@@ -1,20 +1,24 @@
 import {
+  Accessibility,
   ArrowRight,
+  Baby,
   Briefcase,
+  Check,
   ChefHat,
   CircleDollarSign,
+  Globe2,
   HardHat,
   HeartHandshake,
   Laptop,
   Layers,
   MapPin,
   MessageCircle,
-  Newspaper,
-  Shield,
+  Scale,
+  ShieldCheck,
   ShoppingBag,
   Sparkles,
-  Users,
   Wallet,
+  Warehouse,
 } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { LogoText } from "@/components/brand/LogoText";
@@ -31,6 +35,9 @@ import { MegaMenuPostJob } from "./MegaMenuPostJob";
 import { PartnerTrustRow } from "./PartnerTrustRow";
 
 const newsCats = ["newsCategoryVisas", "newsCategoryWork", "newsCategoryRights"] as const;
+const newsCatIcons = [Globe2, Briefcase, Scale] as const;
+const pricingStarterFeatures = ["pricingPlanStarterF1", "pricingPlanStarterF2", "pricingPlanStarterF3"] as const;
+const pricingPlusFeatures = ["pricingPlanPlusF1", "pricingPlanPlusF2", "pricingPlanPlusF3"] as const;
 
 export async function LandingView({ news }: { news: ImmigrationNewsItem[] }) {
   const t = await getTranslations("Landing");
@@ -43,6 +50,10 @@ export async function LandingView({ news }: { news: ImmigrationNewsItem[] }) {
     { key: "catAgedcare", slug: "agedcare", Icon: HeartHandshake },
     { key: "catIt", slug: "it", Icon: Laptop },
     { key: "catRetail", slug: "retail", Icon: ShoppingBag },
+    { key: "catWarehouse", slug: "warehouse", Icon: Warehouse },
+    { key: "catDisability", slug: "disability", Icon: Accessibility },
+    { key: "catChildcare", slug: "childcare", Icon: Baby },
+    { key: "catSecurity", slug: "security", Icon: ShieldCheck },
   ] as const;
 
   return (
@@ -154,61 +165,46 @@ export async function LandingView({ news }: { news: ImmigrationNewsItem[] }) {
           </div>
 
           <div className="mx-auto max-w-content px-4 pb-12 pt-8 sm:pb-14 sm:pt-10 lg:px-6 lg:pb-20 lg:pt-12">
-            <div className="relative overflow-hidden rounded-2xl border border-emerald-200/80 bg-gradient-to-br from-emerald-50/95 via-white to-teal-50/45 p-6 shadow-[0_20px_56px_rgba(13,148,136,0.1)] ring-1 ring-emerald-100/70 sm:p-8 lg:p-10">
+            <div className="relative overflow-hidden rounded-2xl border border-slate-200/90 bg-[#f5f6f4] p-6 shadow-[0_12px_40px_rgba(15,23,42,0.06)] sm:p-8 lg:p-10">
               <div
-                className="pointer-events-none absolute -right-20 -top-24 h-56 w-56 rounded-full bg-teal-400/15 blur-3xl"
+                className="pointer-events-none absolute -right-20 -top-24 h-56 w-56 rounded-full bg-teal-400/12 blur-3xl"
                 aria-hidden
               />
               <div
                 className="pointer-events-none absolute -bottom-16 -left-12 h-44 w-44 rounded-full bg-emerald-300/10 blur-3xl"
                 aria-hidden
               />
-              <p className="relative text-[11px] font-bold uppercase tracking-[0.22em] text-teal-900/75">
-                {t("heroBannerEyebrow")}
-              </p>
-              <p className="relative mt-3 max-w-4xl text-[17px] font-medium leading-[1.55] text-[#14261f] sm:text-[18px] lg:text-[19px]">
-                {t("heroSubtitle")}
-              </p>
-              <p className="relative mt-5 max-w-4xl border-l-[3px] border-teal-700 pl-5 text-[15px] leading-relaxed text-slate-800 sm:pl-6 sm:text-[16px]">
-                {t("heroTrustLine")}
-              </p>
+              <h2 className="relative font-[family-name:var(--font-outfit)] text-[24px] font-semibold tracking-tight text-[#001e00] sm:text-[28px] lg:text-[30px]">
+                {t("trendingTitle")}
+              </h2>
+              <p className="relative mt-2 max-w-2xl text-[15px] leading-relaxed text-[#5e6d64]">{t("trendingSubtitle")}</p>
+              <div className="relative mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-5">
+                {categories.map(({ key, slug, Icon }) => (
+                  <Link
+                    key={slug}
+                    href={`/jobs?category=${slug}`}
+                    className={cn(
+                      "group flex min-h-[116px] flex-col justify-between rounded-[11px] border border-slate-200/95 bg-white p-4 shadow-[0_1px_3px_rgba(15,23,42,0.06)] transition-all duration-200",
+                      "hover:border-[#157f3c] hover:shadow-[0_8px_24px_rgba(21,127,60,0.08)]",
+                      "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#157f3c]",
+                    )}
+                  >
+                    <Icon
+                      className="h-7 w-7 shrink-0 text-[#157f3c] opacity-[0.92] transition group-hover:opacity-100"
+                      strokeWidth={1.5}
+                      aria-hidden
+                    />
+                    <span className="text-left text-[14px] font-semibold leading-snug tracking-tight text-[#001e00] sm:text-[15px]">
+                      {t(key)}
+                    </span>
+                  </Link>
+                ))}
+              </div>
             </div>
           </div>
         </section>
 
         <HighlightsSection />
-
-        {/* ——— Categories (Upwork-style sector grid) ——— */}
-        <section className="border-b border-black/[0.06] bg-[#f5f6f4] py-11 lg:py-14">
-          <div className="mx-auto max-w-content px-4 lg:px-6">
-            <h2 className="font-[family-name:var(--font-outfit)] text-[24px] font-semibold tracking-tight text-[#001e00] sm:text-[28px] lg:text-[30px]">
-              {t("trendingTitle")}
-            </h2>
-            <p className="mt-2 max-w-2xl text-[15px] leading-relaxed text-[#5e6d64]">{t("trendingSubtitle")}</p>
-            <div className="mt-8 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-6">
-              {categories.map(({ key, slug, Icon }) => (
-                <Link
-                  key={slug}
-                  href={`/jobs?category=${slug}`}
-                  className={cn(
-                    "group flex min-h-[116px] flex-col justify-between rounded-[11px] border border-slate-200/95 bg-white p-4 shadow-[0_1px_3px_rgba(15,23,42,0.06)] transition-all duration-200",
-                    "hover:border-[#157f3c] hover:shadow-[0_8px_24px_rgba(21,127,60,0.08)]",
-                    "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#157f3c]",
-                  )}
-                >
-                  <Icon
-                    className="h-7 w-7 shrink-0 text-[#157f3c] opacity-[0.92] transition group-hover:opacity-100"
-                    strokeWidth={1.5}
-                    aria-hidden
-                  />
-                  <span className="text-left text-[14px] font-semibold leading-snug tracking-tight text-[#001e00] sm:text-[15px]">
-                    {t(key)}
-                  </span>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
 
         {/* ——— Trust loop (fund → prove → pay) ——— */}
         <section
@@ -252,31 +248,80 @@ export async function LandingView({ news }: { news: ImmigrationNewsItem[] }) {
           </div>
         </section>
 
-        {/* ——— Two paths (For workers / For business) ——— */}
-        <section className="border-b border-black/[0.06] bg-white py-16 lg:py-20">
-          <div className="mx-auto grid max-w-content gap-6 px-4 lg:grid-cols-2 lg:gap-8 lg:px-6">
-            <div className="flex flex-col rounded-lg border border-black/[0.08] bg-gradient-to-br from-au-mist/40 to-white p-8 shadow-card lg:p-10">
-              <Users className="h-10 w-10 text-au-gum" strokeWidth={1.5} />
-              <h2 className="mt-6 text-[22px] font-semibold text-[#001e00]">{t("splitWorkersTitle")}</h2>
-              <p className="mt-3 flex-1 text-[15px] leading-relaxed text-[#5e6d64]">{t("splitWorkersDesc")}</p>
-              <Button variant="outline" className="mt-8 w-fit border-au-gum text-au-gum hover:bg-au-mist" asChild>
-                <Link href="/auth/signup?role=worker" className="gap-2">
-                  {t("splitWorkersCta")}
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-              </Button>
+        {/* ——— Employer plans (Upwork-style tiers, TrustWork benefits) ——— */}
+        <section className="border-b border-slate-200/80 bg-gradient-to-b from-emerald-50/50 via-white to-white py-16 lg:py-20">
+          <div className="mx-auto max-w-content px-4 lg:px-6">
+            <h2 className="text-center font-[family-name:var(--font-outfit)] text-[24px] font-semibold tracking-tight text-[#001e00] sm:text-[28px] lg:text-[30px]">
+              {t("pricingSectionTitle")}
+            </h2>
+            <p className="mx-auto mt-2 max-w-2xl text-center text-[15px] leading-relaxed text-[#5e6d64]">
+              {t("pricingSectionSubtitle")}
+            </p>
+
+            <div className="mt-10 grid gap-6 lg:grid-cols-2 lg:gap-8 lg:items-stretch">
+              <div className="flex min-h-0 flex-col rounded-2xl border border-slate-200/95 bg-white p-8 shadow-[0_1px_3px_rgba(15,23,42,0.06)] sm:p-10">
+                <h3 className="text-[20px] font-semibold text-[#001e00] sm:text-[22px]">{t("pricingPlanStarterName")}</h3>
+                <p className="mt-1 text-[14px] leading-relaxed text-[#5e6d64]">{t("pricingPlanStarterTagline")}</p>
+                <p className="mt-6 text-[17px] font-semibold leading-snug text-[#001e00]">{t("pricingPlanStarterFee")}</p>
+                <p className="mt-6 text-[13px] font-semibold uppercase tracking-wide text-[#001e00]">
+                  {t("pricingPlanStarterListIntro")}
+                </p>
+                <ul className="mt-3 flex flex-1 flex-col gap-2.5">
+                  {pricingStarterFeatures.map((key) => (
+                    <li key={key} className="flex gap-3 text-[14px] leading-snug text-[#5e6d64]">
+                      <Check className="h-5 w-5 shrink-0 text-[#157f3c]" strokeWidth={2} aria-hidden />
+                      <span>{t(key)}</span>
+                    </li>
+                  ))}
+                </ul>
+                <Button
+                  variant="outline"
+                  className="mt-8 w-full border-[#157f3c] text-[#157f3c] hover:bg-emerald-50 hover:text-[#0f5c2e] sm:w-auto"
+                  asChild
+                >
+                  <Link href="/auth/signup?role=employer" className="gap-2">
+                    {t("pricingCtaStarter")}
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </Button>
+              </div>
+
+              <div className="relative flex min-h-0 flex-col rounded-2xl border-2 border-[#157f3c]/30 bg-white p-8 shadow-[0_8px_32px_rgba(21,127,60,0.12)] sm:p-10">
+                <span className="absolute right-4 top-4 rounded-full bg-[#157f3c] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-white sm:right-5 sm:top-5">
+                  {t("pricingPopularBadge")}
+                </span>
+                <h3 className="pr-20 text-[20px] font-semibold text-[#001e00] sm:text-[22px]">{t("pricingPlanPlusName")}</h3>
+                <p className="mt-1 text-[14px] leading-relaxed text-[#5e6d64]">{t("pricingPlanPlusTagline")}</p>
+                <p className="mt-6 text-[17px] font-semibold leading-snug text-[#001e00]">{t("pricingPlanPlusFee")}</p>
+                <p className="mt-6 text-[13px] font-semibold uppercase tracking-wide text-[#001e00]">
+                  {t("pricingPlanPlusListIntro")}
+                </p>
+                <ul className="mt-3 flex flex-1 flex-col gap-2.5">
+                  {pricingPlusFeatures.map((key) => (
+                    <li key={key} className="flex gap-3 text-[14px] leading-snug text-[#5e6d64]">
+                      <Check className="h-5 w-5 shrink-0 text-[#157f3c]" strokeWidth={2} aria-hidden />
+                      <span>{t(key)}</span>
+                    </li>
+                  ))}
+                </ul>
+                <Button variant="green" className="mt-8 w-full sm:w-auto" asChild>
+                  <Link href="/auth/signup?role=employer" className="gap-2">
+                    {t("pricingCtaPlus")}
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </Button>
+              </div>
             </div>
-            <div className="flex flex-col rounded-lg border border-black/[0.08] bg-gradient-to-br from-blue-50/80 to-white p-8 shadow-card lg:p-10">
-              <Briefcase className="h-10 w-10 text-au-ocean" strokeWidth={1.5} />
-              <h2 className="mt-6 text-[22px] font-semibold text-[#001e00]">{t("splitBizTitle")}</h2>
-              <p className="mt-3 flex-1 text-[15px] leading-relaxed text-[#5e6d64]">{t("splitBizDesc")}</p>
-              <Button variant="primary" className="mt-8 w-fit" asChild>
-                <Link href="/auth/signup?role=employer" className="gap-2">
-                  {t("splitBizCta")}
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-              </Button>
-            </div>
+
+            <p className="mt-8 text-center text-[14px] leading-relaxed text-[#5e6d64]">{t("pricingWorkerNote")}</p>
+            <p className="mt-4 text-center">
+              <Link
+                href="/faq"
+                className="text-[14px] font-semibold text-[#157f3c] underline-offset-4 hover:underline"
+              >
+                {t("pricingCompareAll")}
+              </Link>
+            </p>
           </div>
         </section>
 
@@ -375,50 +420,87 @@ export async function LandingView({ news }: { news: ImmigrationNewsItem[] }) {
           </div>
         </section>
 
-        {/* ——— News ——— */}
-        <section id="news" className="scroll-mt-24 bg-white py-16 lg:py-20">
+        {/* ——— News (aligned with sector cards + community teaser) ——— */}
+        <section id="news" className="scroll-mt-24 border-b border-slate-200/80 bg-[#f5f6f4] py-14 lg:py-20">
           <div className="mx-auto max-w-content px-4 lg:px-6">
-            <div className="flex flex-wrap items-end justify-between gap-4">
-              <div>
-                <Newspaper className="h-8 w-8 text-au-ocean" strokeWidth={1.5} />
-                <h2 className="mt-3 text-[28px] font-semibold text-[#001e00]">{t("newsTitle")}</h2>
-                <p className="mt-1 max-w-xl text-[15px] text-[#5e6d64]">{t("newsSubtitle")}</p>
+            <div className="relative overflow-hidden rounded-2xl border border-slate-200/90 bg-white p-6 shadow-[0_12px_40px_rgba(15,23,42,0.06)] sm:p-8 lg:p-10">
+              <div
+                className="pointer-events-none absolute -right-16 -top-20 h-48 w-48 rounded-full bg-teal-400/10 blur-3xl"
+                aria-hidden
+              />
+              <div
+                className="pointer-events-none absolute -bottom-12 -left-10 h-40 w-40 rounded-full bg-emerald-300/8 blur-3xl"
+                aria-hidden
+              />
+
+              <div className="relative flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between lg:gap-10">
+                <div className="min-w-0">
+                  <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-teal-900/75">
+                    {t("newsEyebrow")}
+                  </p>
+                  <h2 className="mt-2 font-[family-name:var(--font-outfit)] text-[24px] font-semibold tracking-tight text-[#001e00] sm:text-[26px] lg:text-[28px]">
+                    {t("newsTitle")}
+                  </h2>
+                  <p className="mt-2 max-w-xl text-[15px] leading-relaxed text-[#5e6d64]">{t("newsSubtitle")}</p>
+                </div>
+                <Button
+                  variant="outline"
+                  className="relative shrink-0 border-[#157f3c] text-[#157f3c] hover:bg-emerald-50 hover:text-[#0f5c2e]"
+                  asChild
+                >
+                  <Link href="/jobs" className="gap-2">
+                    {t("footerBrowseJobs")}
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </Button>
               </div>
-              <Link href="/jobs" className="text-[14px] font-semibold text-au-ocean hover:underline">
-                {t("footerBrowseJobs")} →
-              </Link>
-            </div>
-            <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {news.length === 0 ? (
-                <li className="col-span-full rounded-lg border border-dashed border-black/[0.12] p-8 text-center text-[#5e6d64]">
-                  {t("newsEmpty")}
-                </li>
-              ) : (
-                news.slice(0, 6).map((item, i) => {
-                  const catKey = newsCats[i % newsCats.length];
-                  return (
-                    <li key={`${item.link}-${i}`}>
-                      <article className="flex h-full flex-col rounded-lg border border-black/[0.08] bg-[#fafafa] p-5 transition hover:shadow-lift">
-                        <span className="w-fit rounded bg-white px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-au-ocean">
-                          {t(catKey)}
-                        </span>
-                        <h3 className="mt-3 flex-1 text-[15px] font-semibold leading-snug text-[#001e00]">{item.title}</h3>
-                        <p className="mt-2 text-[12px] text-[#5e6d64]">{item.source}</p>
+
+              <ul className="relative mt-10 grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
+                {news.length === 0 ? (
+                  <li className="col-span-full rounded-[11px] border border-dashed border-slate-300/90 bg-[#fafafa] px-6 py-10 text-center text-[15px] text-[#5e6d64]">
+                    {t("newsEmpty")}
+                  </li>
+                ) : (
+                  news.slice(0, 6).map((item, i) => {
+                    const catKey = newsCats[i % newsCats.length];
+                    const CatIcon = newsCatIcons[i % newsCatIcons.length];
+                    return (
+                      <li key={`${item.link}-${i}`}>
                         <a
                           href={item.link}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="mt-3 inline-flex items-center gap-1 text-[13px] font-semibold text-au-gumbright hover:underline"
+                          className={cn(
+                            "group flex h-full min-h-[148px] flex-col rounded-[11px] border border-slate-200/95 bg-white p-4 shadow-[0_1px_3px_rgba(15,23,42,0.06)] transition-all duration-200",
+                            "hover:border-[#157f3c] hover:shadow-[0_8px_24px_rgba(21,127,60,0.08)]",
+                            "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#157f3c]",
+                          )}
                         >
-                          {t("newsReadMore")}
-                          <ArrowRight className="h-3.5 w-3.5" />
+                          <div className="flex items-start justify-between gap-3">
+                            <span className="inline-flex w-fit items-center rounded-md bg-[#157f3c]/8 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-[#0f5c2e]">
+                              {t(catKey)}
+                            </span>
+                            <CatIcon
+                              className="h-7 w-7 shrink-0 text-[#157f3c] opacity-90 transition group-hover:opacity-100"
+                              strokeWidth={1.5}
+                              aria-hidden
+                            />
+                          </div>
+                          <h3 className="mt-3 flex-1 text-left text-[15px] font-semibold leading-snug tracking-tight text-[#001e00]">
+                            {item.title}
+                          </h3>
+                          <p className="mt-2 text-left text-[13px] text-[#5e6d64]">{item.source}</p>
+                          <span className="mt-4 inline-flex items-center gap-1 text-[13px] font-semibold text-[#157f3c] group-hover:underline">
+                            {t("newsReadMore")}
+                            <ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-0.5" />
+                          </span>
                         </a>
-                      </article>
-                    </li>
-                  );
-                })
-              )}
-            </ul>
+                      </li>
+                    );
+                  })
+                )}
+              </ul>
+            </div>
           </div>
         </section>
       </main>
@@ -429,7 +511,7 @@ export async function LandingView({ news }: { news: ImmigrationNewsItem[] }) {
           <div className="lg:col-span-2">
             <LogoText href="/" variant="footer" />
             <p className="mt-4 max-w-sm text-[14px] leading-relaxed text-white/70">
-              {t("heroSubtitle")}
+              {t("footerTagline")}
             </p>
           </div>
           <div>

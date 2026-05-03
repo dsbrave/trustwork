@@ -1,0 +1,10 @@
+---
+description: Official GitHub remote for TrustWork (not Camera Real)
+alwaysApply: true
+---
+
+# TrustWork — repositório GitHub
+
+- **Remoto oficial deste projeto:** [https://github.com/dsbrave/trustwork.git](https://github.com/dsbrave/trustwork.git) (organização/user: `dsbrave`, repo: `trustwork`).
+- Em `git push`, `git remote add origin` ou PRs, usar sempre este URL — **não** confundir com outros repositórios (ex.: Camera Real).
+- Secção correspondente no README: instruções em `README.md` sob “Enviar código para o GitHub”.

@@ -28,6 +28,10 @@ export default async function JobsPage({ searchParams }: Props) {
     { slug: "agedcare", label: tPage("catAgedcare") },
     { slug: "it", label: tPage("catIt") },
     { slug: "retail", label: tPage("catRetail") },
+    { slug: "warehouse", label: tPage("catWarehouse") },
+    { slug: "disability", label: tPage("catDisability") },
+    { slug: "childcare", label: tPage("catChildcare") },
+    { slug: "security", label: tPage("catSecurity") },
   ];
 
   const buildHref = (c: string) => {
