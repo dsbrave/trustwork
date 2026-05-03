@@ -13,7 +13,7 @@ export function LanguageSwitcher() {
   const [pending, startTransition] = useTransition();
 
   return (
-    <label className="flex items-center gap-2 text-sm font-medium text-slate-600">
+    <label className="flex items-center gap-1.5 text-sm font-medium text-slate-600 sm:gap-2">
       <span className="hidden sm:inline">Language</span>
       <select
         aria-label="Language"
@@ -25,7 +25,7 @@ export function LanguageSwitcher() {
             router.replace(pathname, { locale: next });
           });
         }}
-        className="rounded-md border border-black/[0.12] bg-white px-3 py-2 text-[14px] text-[#001e00] shadow-sm outline-none transition hover:border-au-ocean focus:border-au-gumbright focus:ring-2 focus:ring-au-gum/20"
+        className="max-w-[4.5rem] truncate rounded-md border border-slate-200 bg-white py-1.5 pl-2 pr-6 text-[12px] font-medium text-[#334155] shadow-sm outline-none transition hover:border-slate-300 focus:border-teal-600/40 focus:ring-2 focus:ring-teal-600/15 sm:max-w-none sm:px-3 sm:py-2 sm:text-[14px] sm:text-[#1c2620]"
       >
         {locales.map((l) => (
           <option key={l} value={l}>

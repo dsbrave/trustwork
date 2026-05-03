@@ -1,0 +1,17 @@
+---
+description: TrustWork — sempre atualizar todos os locales ao mudar cópia ou chaves i18n
+globs: messages/**/*.json
+alwaysApply: true
+---
+
+# i18n — regra de ouro (TrustWork Australia)
+
+**Locales do projeto:** `en`, `pt`, `es`, `zh`, `hi`, `ar` — ficheiros em `messages/*.json`.
+
+Ao adicionar, remover ou alterar **qualquer chave** em `Landing`, `Jobs`, `MegaMenu`, ou outro namespace partilhado:
+
+1. **Aplicar a mesma alteração em todas as línguas** na mesma tarefa (não deixar só `en.json` ou só `en` + `pt`).
+2. Para idiomas ainda sem tradução natural, usar **inglês como placeholder** no ficheiro correspondente até haver tradução — mas a **estrutura de chaves deve ser idêntica** em todos os ficheiros.
+3. Ao renomear ou apagar uma chave, **remover ou renomear em todos os `messages/*.json`** para não quebrar build/runtime.
+
+Referência rápida dos ficheiros: `messages/en.json`, `messages/pt.json`, `messages/es.json`, `messages/zh.json`, `messages/hi.json`, `messages/ar.json`.

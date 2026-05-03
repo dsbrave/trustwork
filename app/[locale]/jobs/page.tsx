@@ -1,5 +1,6 @@
 import { Briefcase, MapPin } from "lucide-react";
 import { getTranslations } from "next-intl/server";
+import { LogoText } from "@/components/brand/LogoText";
 import { Button } from "@/components/ui/button";
 import { filterMockJobs } from "@/lib/mock-jobs";
 import { Link } from "@/navigation";
@@ -41,9 +42,7 @@ export default async function JobsPage({ searchParams }: Props) {
     <div className="min-h-screen bg-[#f7f7f7]">
       <header className="border-b border-black/[0.08] bg-white shadow-nav">
         <div className="mx-auto flex max-w-content items-center justify-between gap-4 px-4 py-4 lg:px-6">
-          <Link href="/" className="text-[18px] font-semibold text-[#001e00]">
-            ← TrustWork
-          </Link>
+          <LogoText href="/" />
           <Button variant="primary" size="sm" asChild>
             <Link href="/auth/signup?role=employer">{tPage("navPostJob")}</Link>
           </Button>
