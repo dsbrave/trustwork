@@ -139,8 +139,11 @@ export function HighlightsSection() {
           {panels.map((panel, i) => {
             const Icon = panel.icon;
             return (
-              <LandingCardStripItem key={`${mode}-${i}`}>
-              <article className="flex h-full flex-col">
+              <LandingCardStripItem
+                key={`${mode}-${i}`}
+                className="basis-[min(78vw,300px)] md:basis-auto"
+              >
+              <article className="flex h-full min-h-0 touch-manipulation flex-col">
                 <div
                   className={cn(
                     "relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-slate-200/80 bg-gradient-to-br shadow-sm",
@@ -157,7 +160,7 @@ export function HighlightsSection() {
                       {t("highlightsProBadge")}
                     </span>
                   ) : null}
-                  <div className="flex h-full items-center justify-center p-8">
+                  <div className="flex h-full items-center justify-center p-6 sm:p-8">
                     <span className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/90 text-teal-800 shadow-sm ring-1 ring-slate-200/80 sm:h-[72px] sm:w-[72px]">
                       <Icon className="h-8 w-8 sm:h-9 sm:w-9" strokeWidth={1.5} aria-hidden />
                     </span>

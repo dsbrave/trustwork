@@ -1,23 +1,130 @@
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 type Variant = "hero" | "section";
 
+export type PartnerLogoAlts = {
+  lumx: string;
+  tafe: string;
+  naati: string;
+  /** Alt text for `/partners/student-exchange.webp` (not shown as visible copy). */
+  exchange: string;
+};
+
 /**
- * Partner strip matching the TrustWork layout: text row + TAFE pill + NATI underline + exchange line.
- * Uses markup instead of rasterised logos so the UI matches design without relying on cached SVG assets.
+ * Partner strip with official raster logos from `/public/partners/*.png|webp`.
  */
 export function PartnerTrustRow({
   label,
-  exchangeLine,
   variant = "hero",
   className,
+  logoAlts,
 }: {
   label: string;
-  exchangeLine: string;
   variant?: Variant;
   className?: string;
+  logoAlts: PartnerLogoAlts;
 }) {
   const isSection = variant === "section";
+
+  /** Knocks out baked-in white boxes on raster logos when placed on light grey surfaces. */
+  const blend = "mix-blend-multiply";
+
+  const imgWrap =
+    "inline-flex min-h-[2.75rem] shrink-0 items-center justify-center opacity-[0.94] transition-opacity hover:opacity-100 focus-visible:opacity-100 sm:min-h-[3.25rem]";
+
+  /** Wordmarks / horizontal marks — slightly taller target height. */
+  const clsWide = cn(
+    "h-11 w-auto max-h-12 max-w-[min(52vw,16rem)] object-contain object-center sm:h-12 sm:max-h-[3.35rem] sm:max-w-[17rem]",
+    blend,
+  );
+
+  /** Circular / seal marks — a touch shorter so they don’t dominate the row. */
+  const clsSeal = cn(
+    "h-10 w-auto max-h-11 max-w-[min(40vw,11rem)] object-contain object-center sm:h-11 sm:max-h-12 sm:max-w-[12rem]",
+    blend,
+  );
+
+  const rowClass = cn(
+    "flex flex-wrap items-center gap-x-3 gap-y-3 sm:gap-x-4 sm:gap-y-3.5",
+    isSection && "sm:justify-center",
+  );
+
+  const logos = (
+    <>
+      <a
+        href="https://www.lumx.io"
+        target="_blank"
+        rel="noopener noreferrer"
+        className={imgWrap}
+      >
+        <Image
+          src="/partners/lumx.png"
+          alt={logoAlts.lumx}
+          width={180}
+          height={44}
+          className={clsWide}
+        />
+      </a>
+
+      <span className="select-none text-slate-300 sm:text-base" aria-hidden>
+        ·
+      </span>
+
+      <a
+        href="https://www.tafensw.edu.au"
+        target="_blank"
+        rel="noopener noreferrer"
+        className={imgWrap}
+      >
+        <Image
+          src="/partners/tafe.png"
+          alt={logoAlts.tafe}
+          width={160}
+          height={48}
+          className={clsSeal}
+        />
+      </a>
+
+      <span className="select-none text-slate-300 sm:text-base" aria-hidden>
+        ·
+      </span>
+
+      <a
+        href="https://www.naati.com.au/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className={imgWrap}
+      >
+        <Image
+          src="/partners/naati.png"
+          alt={logoAlts.naati}
+          width={160}
+          height={48}
+          className={clsSeal}
+        />
+      </a>
+
+      <span className="select-none text-slate-300 sm:text-base" aria-hidden>
+        ·
+      </span>
+
+      <a
+        href="https://www.studyinaustralia.gov.au"
+        target="_blank"
+        rel="noopener noreferrer"
+        className={imgWrap}
+      >
+        <Image
+          src="/partners/student-exchange.webp"
+          alt={logoAlts.exchange}
+          width={200}
+          height={48}
+          className={clsWide}
+        />
+      </a>
+    </>
+  );
 
   return (
     <div className={cn(className)}>
@@ -29,66 +136,13 @@ export function PartnerTrustRow({
       >
         {label}
       </p>
-      <div
-        className={cn(
-          "mt-3 flex flex-wrap items-center gap-x-2 gap-y-2.5 sm:gap-x-3",
-          isSection && "sm:justify-center",
-        )}
-      >
-        <a
-          href="https://www.lumx.io"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-[15px] font-semibold lowercase tracking-tight text-slate-900 transition hover:text-slate-700 sm:text-base"
-        >
-          lumx
-        </a>
-
-        <span className="select-none text-slate-300 sm:text-sm" aria-hidden>
-          ·
-        </span>
-
-        <a
-          href="https://www.tafensw.edu.au"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex rounded-md bg-[#374151] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-white shadow-sm transition hover:bg-slate-800 sm:text-[11px]"
-        >
-          TAFE
-        </a>
-
-        <span className="select-none text-slate-300 sm:text-sm" aria-hidden>
-          ·
-        </span>
-
-        <a
-          href="https://www.nsw.gov.au/education-and-training"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="border-b-[3px] border-slate-700 pb-0.5 text-[13px] font-extrabold uppercase tracking-tight text-slate-800 transition hover:border-slate-900 hover:text-slate-950 sm:text-sm"
-        >
-          NATI
-        </a>
-
-        <span className="select-none text-slate-300 sm:text-sm" aria-hidden>
-          ·
-        </span>
-
-        <a
-          href="https://www.studyinaustralia.gov.au"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex max-w-[min(100%,20rem)] items-center gap-2 text-left text-[11px] leading-snug text-slate-500 transition hover:text-slate-700 sm:max-w-none sm:text-xs"
-        >
-          <span
-            className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-slate-400 text-[12px] font-light text-slate-500"
-            aria-hidden
-          >
-            +
-          </span>
-          <span>{exchangeLine}</span>
-        </a>
-      </div>
+      {isSection ? (
+        <div className={cn("mt-3", rowClass)}>{logos}</div>
+      ) : (
+        <div className="mt-3 rounded-xl bg-[#eff1ee] px-3 py-3 ring-1 ring-slate-200/45 sm:px-4 sm:py-3.5">
+          <div className={rowClass}>{logos}</div>
+        </div>
+      )}
     </div>
   );
 }

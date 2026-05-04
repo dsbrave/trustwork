@@ -25,7 +25,8 @@ const desktopGrid: Record<Cols, string> = {
 
 const scrollShell = (desktopCols: Cols) =>
   cn(
-    "flex snap-x snap-mandatory gap-4 overflow-x-auto overflow-y-hidden overscroll-x-contain pb-3 [-webkit-overflow-scrolling:touch] touch-pan-x",
+    /* pan-x + pan-y: swipe cards sideways without trapping vertical page scroll (avoid touch-pan-x only) */
+    "flex snap-x snap-proximity gap-4 overflow-x-auto overflow-y-hidden overscroll-x-contain pb-3 [-webkit-overflow-scrolling:touch] touch-[pan-x_pan-y]",
     "motion-reduce:snap-none motion-reduce:scroll-auto",
     "scroll-pl-1 scroll-pr-8 sm:scroll-pr-10",
     "md:grid md:gap-5 md:overflow-visible md:pb-0 md:snap-none md:touch-auto md:scroll-pl-0 md:scroll-pr-0",
@@ -42,7 +43,7 @@ const gridShellAll = (desktopCols: Cols): string => {
     case 5:
       return "grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5 lg:gap-5";
     case 3:
-      return "grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 md:gap-5";
+      return "grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3 md:gap-5";
     case 2:
       return "grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-5";
     default:
@@ -82,10 +83,11 @@ export function LandingCardStrip({
   const interactiveClasses = cn(
     shell,
     mobileLayout === "grid"
-      ? "outline-none focus-visible:ring-2 focus-visible:ring-[#00843D] focus-visible:ring-offset-2 rounded-md"
+      ? "touch-pan-y outline-none focus-visible:ring-2 focus-visible:ring-[#00843D] focus-visible:ring-offset-2 rounded-md"
       : "outline-none focus-visible:ring-2 focus-visible:ring-[#00843D] focus-visible:ring-offset-2 rounded-md md:rounded-none md:focus-visible:ring-0",
   );
 
+  /* Do not make the region focusable: tabIndex caused touch devices to feel like a scroll "trap". */
   return (
     <StripLayoutContext.Provider value={mobileLayout}>
       <div className={cn("relative", className)}>
@@ -96,7 +98,6 @@ export function LandingCardStrip({
           <ul
             aria-label={ariaLabel}
             aria-describedby={hintId}
-            tabIndex={0}
             className={cn(interactiveClasses, "m-0 list-none p-0")}
           >
             {children}
@@ -106,7 +107,6 @@ export function LandingCardStrip({
             role="region"
             aria-label={ariaLabel}
             aria-describedby={hintId}
-            tabIndex={0}
             className={interactiveClasses}
           >
             {children}
@@ -130,7 +130,7 @@ export function LandingCardStripItem({ as: Tag = "div", className, children }: I
       className={cn(
         mobileLayout === "grid"
           ? "min-w-0"
-          : "min-w-0 snap-start shrink-0 basis-[min(88vw,380px)] md:basis-auto md:shrink md:snap-none",
+          : "min-w-0 snap-start shrink-0 basis-[min(85vw,360px)] md:basis-auto md:shrink md:snap-none",
         className,
       )}
     >

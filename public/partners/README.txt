@@ -1,14 +1,16 @@
-Partner visuals for TrustWork Australia
-======================================
+Partner logos (landing hero + “They work with us”)
+===================================================
 
-Place SVG/PNG wordmarks here as `/partners/*.svg` so Next.js serves them from the site root.
+Serve from site root as `/partners/…`. Files expected:
 
-Current files are illustrative vector marks for layout and demos. Before production:
-- Obtain official logo packs from each partner’s brand / press guidelines.
-- Replace these files and update alt text in messages if names change.
+  lumx.png
+  tafe.png
+  naati.png          (NAATI — official mark)
+  student-exchange.webp   (optional badge beside exchange copy)
 
-Suggested filenames:
-  lumx.svg
-  tafe.svg
-  nati.svg
-  exchange-agencies.svg
+After replacing files on your machine, keep these filenames (or update paths in
+components/landing/PartnerTrustRow.tsx). Respect each partner’s brand guidelines.
+
+Alt text for Lumx / TAFE / NAATI / student-exchange comes from messages
+(partnerLumx, partnerTafe, partnerNati, heroPartnerExchangeLine for the exchange
+graphic only—visible UI is the logo image, not that string as body text).

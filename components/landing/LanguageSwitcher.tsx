@@ -25,7 +25,7 @@ export function LanguageSwitcher() {
             router.replace(pathname, { locale: next });
           });
         }}
-        className="max-w-[4.5rem] truncate rounded-md border border-slate-200 bg-white py-1.5 pl-2 pr-6 text-[12px] font-medium text-[#334155] shadow-sm outline-none transition hover:border-slate-300 focus:border-teal-600/40 focus:ring-2 focus:ring-teal-600/15 sm:max-w-none sm:px-3 sm:py-2 sm:text-[14px] sm:text-[#1c2620]"
+        className="w-[6.75rem] max-w-[7.25rem] shrink-0 rounded-md border border-slate-200 bg-white py-1 pl-1.5 pr-7 text-[11px] font-medium leading-tight text-[#334155] shadow-sm outline-none transition hover:border-slate-300 focus:border-teal-600/40 focus:ring-2 focus:ring-teal-600/15 sm:w-auto sm:max-w-none sm:min-w-0 sm:px-3 sm:py-2 sm:pr-10 sm:text-[14px] sm:text-[#1c2620]"
       >
         {locales.map((l) => (
           <option key={l} value={l}>

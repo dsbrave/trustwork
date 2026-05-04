@@ -30,6 +30,7 @@ import { HeroAbstractBackdrop } from "./HeroAbstractBackdrop";
 import { HeroSearch } from "./HeroSearch";
 import { HighlightsSection } from "./HighlightsSection";
 import { LandingCardStrip, LandingCardStripItem } from "./LandingCardStrip";
+import { LandingMobileMenu } from "./LandingMobileMenu";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { MegaMenuFindWork } from "./MegaMenuFindWork";
 import { MegaMenuPostJob } from "./MegaMenuPostJob";
@@ -39,6 +40,31 @@ const newsCats = ["newsCategoryVisas", "newsCategoryWork", "newsCategoryRights"]
 const newsCatIcons = [Globe2, Briefcase, Scale] as const;
 const pricingStarterFeatures = ["pricingPlanStarterF1", "pricingPlanStarterF2", "pricingPlanStarterF3"] as const;
 const pricingPlusFeatures = ["pricingPlanPlusF1", "pricingPlanPlusF2", "pricingPlanPlusF3"] as const;
+
+/** Visual accents for Trust Loop steps — cohesive AU greens, slight variation per step */
+const TRUST_LOOP_CARD_THEMES = [
+  {
+    bar: "from-[#00843D] via-emerald-500 to-teal-600",
+    surface:
+      "bg-gradient-to-b from-white via-white to-emerald-50/55",
+    iconSurface: "bg-gradient-to-br from-emerald-50 to-white",
+  },
+  {
+    bar: "from-teal-600 via-[#00843D] to-emerald-600",
+    surface: "bg-gradient-to-b from-white via-teal-50/25 to-teal-50/45",
+    iconSurface: "bg-gradient-to-br from-teal-50 to-white",
+  },
+  {
+    bar: "from-emerald-600 via-teal-600 to-[#0f766e]",
+    surface: "bg-gradient-to-b from-white via-cyan-50/20 to-emerald-50/40",
+    iconSurface: "bg-gradient-to-br from-cyan-50/90 to-white",
+  },
+  {
+    bar: "from-[#059669] via-[#00843D] to-[#047857]",
+    surface: "bg-gradient-to-b from-white via-emerald-50/40 to-teal-50/35",
+    iconSurface: "bg-gradient-to-br from-emerald-100/90 to-white",
+  },
+] as const;
 
 export async function LandingView({ news }: { news: ImmigrationNewsItem[] }) {
   const t = await getTranslations("Landing");
@@ -88,11 +114,12 @@ export async function LandingView({ news }: { news: ImmigrationNewsItem[] }) {
             </nav>
           </div>
 
-          <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
+          <div className="flex shrink-0 items-center gap-1 sm:gap-2">
             <LanguageSwitcher />
+            <LandingMobileMenu />
             <Link
               href="/auth/login"
-              className="hidden whitespace-nowrap rounded-md px-2 py-2 text-[13px] font-semibold text-au-ocean hover:underline sm:inline xl:text-[14px]"
+              className="inline-flex shrink-0 whitespace-nowrap rounded-md px-1.5 py-2 text-[12px] font-semibold text-au-ocean hover:underline sm:px-2 sm:text-[13px] xl:text-[14px]"
             >
               {t("navLogin")}
             </Link>
@@ -100,28 +127,6 @@ export async function LandingView({ news }: { news: ImmigrationNewsItem[] }) {
               <Link href="/auth/signup">{t("navSignup")}</Link>
             </Button>
           </div>
-        </div>
-
-        {/* Mobile link strip */}
-        <div className="scrollbar-hide flex gap-1 overflow-x-auto border-t border-slate-100 bg-slate-50/90 px-3 py-2.5 [-webkit-overflow-scrolling:touch] lg:hidden">
-          <Link href="/jobs" className="whitespace-nowrap rounded-md px-1.5 py-1 text-[13px] font-semibold text-[#0f766e] active:bg-slate-200/80">
-            {t("navFindWork")}
-          </Link>
-          <span className="shrink-0 text-slate-300">·</span>
-          <Link
-            href="/auth/signup?role=employer"
-            className="whitespace-nowrap rounded-md px-1.5 py-1 text-[13px] font-semibold text-[#0f766e] active:bg-slate-200/80"
-          >
-            {t("navPostJob")}
-          </Link>
-          <span className="shrink-0 text-slate-300">·</span>
-          <a href="#loop" className="whitespace-nowrap rounded-md px-1.5 py-1 text-[13px] font-semibold text-[#0f766e] active:bg-slate-200/80">
-            {t("navWhy")}
-          </a>
-          <span className="shrink-0 text-slate-300">·</span>
-          <Link href="/community" className="whitespace-nowrap rounded-md px-1.5 py-1 text-[13px] font-semibold text-[#0f766e] active:bg-slate-200/80">
-            {t("navCommunity")}
-          </Link>
         </div>
       </header>
 
@@ -157,7 +162,12 @@ export async function LandingView({ news }: { news: ImmigrationNewsItem[] }) {
                     <PartnerTrustRow
                       variant="hero"
                       label={t("heroPartnersLabel")}
-                      exchangeLine={t("heroPartnerExchangeLine")}
+                      logoAlts={{
+                        lumx: t("partnerLumx"),
+                        tafe: t("partnerTafe"),
+                        naati: t("partnerNati"),
+                        exchange: t("heroPartnerExchangeLine"),
+                      }}
                     />
                   </div>
                 </div>
@@ -227,7 +237,7 @@ export async function LandingView({ news }: { news: ImmigrationNewsItem[] }) {
         {/* ——— Trust loop (fund → prove → pay) ——— */}
         <section
           id="loop"
-          className="scroll-mt-24 border-b border-black/[0.06] bg-white py-14 lg:py-16"
+          className="scroll-mt-24 border-b border-black/[0.06] bg-gradient-to-b from-white via-[#f8faf8] to-white py-14 lg:py-16"
         >
           <div className="mx-auto max-w-content px-4 lg:px-6">
             <div className="mx-auto max-w-3xl text-center">
@@ -237,6 +247,25 @@ export async function LandingView({ news }: { news: ImmigrationNewsItem[] }) {
               </h2>
               <p className="mt-3 text-[15px] leading-relaxed text-[#5e6d64] sm:text-[16px]">{t("stackSubtitle")}</p>
             </div>
+
+            <figure className="mx-auto mt-10 max-w-3xl px-0">
+              <div className="aspect-video overflow-hidden rounded-2xl border border-black/[0.08] bg-black/[0.04] shadow-[0_12px_40px_rgba(15,23,42,0.08)]">
+                <video
+                  className="h-full w-full object-cover object-center"
+                  controls
+                  playsInline
+                  preload="metadata"
+                  aria-label={t("stackVideoAriaLabel")}
+                >
+                  <source src="/videos/trust-loop-intro.mp4" type="video/mp4" />
+                  <p className="p-4 text-center text-[14px] text-[#5e6d64]">{t("stackVideoFallback")}</p>
+                </video>
+              </div>
+              <figcaption className="mt-3 text-center text-[13px] leading-snug text-[#5e6d64]">
+                {t("stackVideoCaption")}
+              </figcaption>
+            </figure>
+
             <LandingCardStrip
               ariaLabel={t("a11yRegionTrustLoop")}
               hint={t("a11yHorizontalScrollHint")}
@@ -250,22 +279,45 @@ export async function LandingView({ news }: { news: ImmigrationNewsItem[] }) {
                   { step: "03", titleKey: "stack3Title", descKey: "stack3Desc", Icon: MapPin },
                   { step: "04", titleKey: "stack4Title", descKey: "stack4Desc", Icon: CircleDollarSign },
                 ] as const
-              ).map(({ step, titleKey, descKey, Icon }) => (
-                <LandingCardStripItem key={step}>
-                  <div className="relative h-full rounded-2xl border border-black/[0.07] bg-[#fafafa] p-6 shadow-sm transition hover:border-[#00843D]/30 hover:shadow-md">
-                    <span className="font-[family-name:var(--font-outfit)] text-[11px] font-bold tabular-nums text-[#00843D]">
-                      {step}
-                    </span>
-                    <div className="mt-3 flex h-10 w-10 items-center justify-center rounded-xl bg-white text-au-ocean ring-1 ring-black/[0.06]">
-                      <Icon className="h-5 w-5" strokeWidth={1.75} aria-hidden />
+              ).map(({ step, titleKey, descKey, Icon }, i) => {
+                const theme = TRUST_LOOP_CARD_THEMES[i] ?? TRUST_LOOP_CARD_THEMES[0];
+                return (
+                  <LandingCardStripItem key={step}>
+                    <div
+                      className={cn(
+                        "group relative flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200/90 p-6 shadow-[0_4px_28px_rgba(15,23,42,0.07)] transition-all duration-300",
+                        "hover:-translate-y-1 hover:border-au-gum/30 hover:shadow-[0_18px_50px_rgba(0,132,61,0.13)]",
+                        theme.surface,
+                      )}
+                    >
+                      <div
+                        className={cn(
+                          "absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r opacity-[0.92]",
+                          theme.bar,
+                        )}
+                        aria-hidden
+                      />
+                      <div className="flex items-start justify-between gap-3">
+                        <span className="inline-flex h-9 min-w-[2.75rem] items-center justify-center rounded-full bg-[#00843D] px-3 text-[12px] font-bold tabular-nums tracking-wide text-white shadow-md ring-2 ring-white/90">
+                          {step}
+                        </span>
+                        <div
+                          className={cn(
+                            "flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl text-[#00843D] shadow-[inset_0_1px_0_rgba(255,255,255,0.85)] ring-1 ring-emerald-200/75",
+                            theme.iconSurface,
+                          )}
+                        >
+                          <Icon className="h-6 w-6" strokeWidth={1.85} aria-hidden />
+                        </div>
+                      </div>
+                      <h3 className="mt-5 font-[family-name:var(--font-outfit)] text-[17px] font-semibold leading-snug tracking-tight text-[#001e00]">
+                        {t(titleKey)}
+                      </h3>
+                      <p className="mt-3 flex-1 text-[14px] leading-relaxed text-[#4d5f56]">{t(descKey)}</p>
                     </div>
-                    <h3 className="mt-4 font-[family-name:var(--font-outfit)] text-[16px] font-semibold text-[#001e00]">
-                      {t(titleKey)}
-                    </h3>
-                    <p className="mt-2 text-[14px] leading-relaxed text-[#5e6d64]">{t(descKey)}</p>
-                  </div>
-                </LandingCardStripItem>
-              ))}
+                  </LandingCardStripItem>
+                );
+              })}
             </LandingCardStrip>
           </div>
         </section>
@@ -459,7 +511,12 @@ export async function LandingView({ news }: { news: ImmigrationNewsItem[] }) {
               <PartnerTrustRow
                 variant="section"
                 label={t("heroPartnersLabel")}
-                exchangeLine={t("heroPartnerExchangeLine")}
+                logoAlts={{
+                  lumx: t("partnerLumx"),
+                  tafe: t("partnerTafe"),
+                  naati: t("partnerNati"),
+                  exchange: t("heroPartnerExchangeLine"),
+                }}
               />
             </div>
             <p className="mx-auto mt-8 max-w-2xl text-center text-[11px] leading-relaxed text-[#8a9a92]">
