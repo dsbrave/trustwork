@@ -2,7 +2,9 @@
 
 import { Globe } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
-import { defaultLocale, locales, type Locale } from "@/i18n";
+import { useEffect, useState, useTransition } from "react";
+import { locales, type Locale } from "@/i18n";
+import { usePathname, useRouter } from "@/navigation";
 
 /** Short display code for the header trigger (keeps the control narrow on small screens). */
 const LOCALE_CODE: Record<Locale, string> = {
@@ -14,40 +16,41 @@ const LOCALE_CODE: Record<Locale, string> = {
   ar: "AR",
 };
 
-function stripLocalePrefix(pathname: string): string {
-  const parts = pathname.split("/");
-  const maybeLocale = parts[1];
-  if (locales.includes(maybeLocale as Locale)) {
-    parts.splice(1, 1);
-  }
-  const normalized = parts.join("/");
-  return normalized === "" ? "/" : normalized;
-}
+function useLocaleSwitcher() {
+  const current = useLocale() as Locale;
+  const pathname = usePathname();
+  const router = useRouter();
+  const [pending, startTransition] = useTransition();
+  const [selected, setSelected] = useState<Locale>(current);
 
-function buildLocalizedHref(next: Locale, pathname: string): string {
-  const cleanPath = stripLocalePrefix(pathname);
-  if (next === defaultLocale) return cleanPath;
-  return cleanPath === "/" ? `/${next}` : `/${next}${cleanPath}`;
-}
+  useEffect(() => {
+    setSelected(current);
+  }, [current]);
 
-function switchLocale(next: Locale) {
-  if (typeof window === "undefined") return;
-  const target = buildLocalizedHref(next, window.location.pathname);
-  const href = `${target}${window.location.search}${window.location.hash}`;
-  window.location.assign(href);
+  const switchLocale = (next: Locale) => {
+    if (next === selected) return;
+    setSelected(next);
+    startTransition(() => {
+      router.replace(pathname, { locale: next });
+      router.refresh();
+    });
+  };
+
+  return { selected, pending, switchLocale };
 }
 
 /** `lg+`: select in the top bar (e.g. next to Log in / Sign up). */
 export function LanguageSwitcherDesktop() {
   const tNames = useTranslations("LocaleNames");
-  const current = useLocale() as Locale;
+  const { selected, pending, switchLocale } = useLocaleSwitcher();
 
   return (
     <label className="lang-switcher-desktop text-sm font-medium text-slate-600">
       <span className="hidden xl:inline">Language</span>
       <select
         aria-label="Language"
-        value={current}
+        disabled={pending}
+        value={selected}
         onChange={(e) => {
           const next = e.target.value as Locale;
           switchLocale(next);
@@ -66,23 +69,22 @@ export function LanguageSwitcherDesktop() {
 
 /** `<lg`: compact trigger + bottom sheet; place next to the hamburger on mobile. */
 export function LanguageSwitcherMobile() {
-  const t = useTranslations("LocaleNames");
-  const current = useLocale() as Locale;
+  const { selected, pending, switchLocale } = useLocaleSwitcher();
 
   return (
-    <label className="lang-switcher-mobile relative inline-flex h-8 min-w-[3.25rem] items-center justify-center whitespace-nowrap rounded-lg border border-slate-200 bg-white px-2 text-[#334155] shadow-sm">
-      <span className="pointer-events-none inline-flex items-center justify-center gap-1">
+    <label className="lang-switcher-mobile inline-flex h-8 items-center gap-0.5 whitespace-nowrap rounded-lg border border-slate-200 bg-white px-1.5 text-[#334155] shadow-sm">
+      <span className="inline-flex items-center justify-center">
         <Globe className="h-4 w-4 shrink-0 text-slate-600" strokeWidth={2} aria-hidden />
-        <span className="text-[11px] font-semibold leading-none">{LOCALE_CODE[current]}</span>
       </span>
       <select
         aria-label="Language"
-        value={current}
+        disabled={pending}
+        value={selected}
         onChange={(e) => switchLocale(e.target.value as Locale)}
-        className="absolute inset-0 z-10 h-full w-full cursor-pointer appearance-none rounded-lg bg-transparent opacity-0"
+        className="h-6 w-[1.9rem] cursor-pointer appearance-none bg-transparent text-[11px] font-semibold leading-none outline-none"
       >
         {locales.map((l) => (
-          <option key={l} value={l} title={t(l)}>
+          <option key={l} value={l}>
             {LOCALE_CODE[l]}
           </option>
         ))}
