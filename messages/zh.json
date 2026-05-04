@@ -95,6 +95,7 @@
     "stat3Value": "$2B+",
     "stat3Label": "wage recovery narrative (sector)",
     "a11yHorizontalScrollHint": "单指横向滑动查看更多卡片。",
+    "a11yCategoryGridHint": "使用下方网格中的类别链接浏览行业。",
     "a11yRegionCategories": "职位类别",
     "a11yRegionHighlights": "面向劳动者与雇主的平台功能",
     "a11yRegionTrustLoop": "TrustWork 四步流程",

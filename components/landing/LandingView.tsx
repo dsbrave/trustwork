@@ -180,8 +180,9 @@ export async function LandingView({ news }: { news: ImmigrationNewsItem[] }) {
               </h2>
               <p className="relative mt-2 max-w-2xl text-[15px] leading-relaxed text-[#5e6d64]">{t("trendingSubtitle")}</p>
               <LandingCardStrip
+                mobileLayout="grid"
                 ariaLabel={t("a11yRegionCategories")}
-                hint={t("a11yHorizontalScrollHint")}
+                hint={t("a11yCategoryGridHint")}
                 desktopCols={10}
                 className="relative mt-8"
               >

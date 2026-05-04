@@ -95,6 +95,7 @@
     "stat3Value": "$2B+",
     "stat3Label": "wage recovery narrative (sector)",
     "a11yHorizontalScrollHint": "और कार्ड देखने के लिए एक उँगली से क्षैतिज स्वाइप करें।",
+    "a11yCategoryGridHint": "ग्रिड में दिए गए लिंक से सेक्टर ब्राउज़ करें।",
     "a11yRegionCategories": "नौकरी श्रेणियाँ",
     "a11yRegionHighlights": "श्रमिकों और नियोक्ताओं के लिए प्लेटफ़ॉर्म टूल",
     "a11yRegionTrustLoop": "TrustWork चार चरणों में कैसे काम करता है",
