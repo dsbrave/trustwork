@@ -86,7 +86,9 @@ html {
   gap: 0.5rem;
 }
 .lang-switcher-mobile {
-  display: block !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 @media (min-width: 1024px) {
   .lang-switcher-desktop {

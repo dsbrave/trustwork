@@ -18,7 +18,7 @@ export function LandingMobileMenu() {
   const mmHire = messages.MegaMenuHire as Record<string, string>;
 
   const [open, setOpen] = useState(false);
-  const [findOpen, setFindOpen] = useState(true);
+  const [findOpen, setFindOpen] = useState(false);
   const [hireOpen, setHireOpen] = useState(false);
 
   useEffect(() => {
