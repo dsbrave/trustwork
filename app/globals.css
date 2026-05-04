@@ -25,3 +25,74 @@ html {
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
+/* —— Landing header: plain-CSS responsive toggles (works if utility CSS fails to load) —— */
+.landing-header-burger {
+  display: block;
+  flex-shrink: 0;
+}
+.landing-header-nav-desktop {
+  display: none;
+  flex: 1;
+  min-width: 0;
+  align-items: center;
+  gap: 1.25rem;
+}
+.landing-header-logo-mobile {
+  display: flex;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  max-width: min(52vw, 12rem);
+  width: max-content;
+  pointer-events: none;
+  justify-content: center;
+}
+.landing-header-logo-mobile a {
+  pointer-events: auto;
+}
+.landing-header-actions {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.35rem;
+  margin-left: auto;
+  position: relative;
+  z-index: 2;
+}
+@media (min-width: 640px) {
+  .landing-header-actions {
+    gap: 0.5rem;
+  }
+}
+@media (min-width: 1024px) {
+  .landing-header-burger {
+    display: none !important;
+  }
+  .landing-header-nav-desktop {
+    display: flex !important;
+  }
+  .landing-header-logo-mobile {
+    display: none !important;
+  }
+}
+
+/* Language switcher: one surface per breakpoint */
+.lang-switcher-desktop {
+  display: none !important;
+  align-items: center;
+  gap: 0.5rem;
+}
+.lang-switcher-mobile {
+  display: block !important;
+}
+@media (min-width: 1024px) {
+  .lang-switcher-desktop {
+    display: flex !important;
+  }
+  .lang-switcher-mobile {
+    display: none !important;
+  }
+}

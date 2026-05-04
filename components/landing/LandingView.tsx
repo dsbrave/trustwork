@@ -31,7 +31,7 @@ import { HeroSearch } from "./HeroSearch";
 import { HighlightsSection } from "./HighlightsSection";
 import { LandingCardStrip, LandingCardStripItem } from "./LandingCardStrip";
 import { LandingMobileMenu } from "./LandingMobileMenu";
-import { LanguageSwitcher } from "./LanguageSwitcher";
+import { LanguageSwitcherDesktop, LanguageSwitcherMobile } from "./LanguageSwitcher";
 import { MegaMenuFindWork } from "./MegaMenuFindWork";
 import { MegaMenuPostJob } from "./MegaMenuPostJob";
 import { PartnerTrustRow } from "./PartnerTrustRow";
@@ -87,43 +87,56 @@ export async function LandingView({ news }: { news: ImmigrationNewsItem[] }) {
     <div className="flex min-h-screen flex-col bg-[#fafafa]">
       {/* ——— Top bar ——— */}
       <header className="sticky top-0 z-[100] border-b border-slate-200/80 bg-white/95 shadow-sm backdrop-blur-md supports-[backdrop-filter]:bg-white/90">
-        <div className="mx-auto flex max-w-content items-center justify-between gap-2 px-3 py-2.5 sm:gap-3 sm:px-4 sm:py-3 lg:gap-4 lg:px-6">
-          <div className="flex min-w-0 flex-1 items-center gap-3 sm:gap-4 lg:gap-5">
-            <LogoText href="/" className="min-w-0 shrink-0" />
-            <nav
-              className="hidden min-w-0 items-center lg:flex"
-              aria-label="Primary"
-            >
-              {/* overflow-visible so mega-menu dropdowns are not clipped */}
-              <div className="flex flex-nowrap items-center gap-0.5 overflow-visible pr-0.5 xl:gap-1">
-                <MegaMenuFindWork />
-                <MegaMenuPostJob />
-                <a
-                  href="#loop"
-                  className="shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-[13px] font-medium text-[#334155] hover:bg-slate-100 hover:text-[#1c2620] xl:px-2.5 xl:text-[14px]"
-                >
-                  {t("navWhy")}
-                </a>
-                <Link
-                  href="/community"
-                  className="shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-[13px] font-medium text-[#334155] hover:bg-slate-100 hover:text-[#1c2620] xl:px-2.5 xl:text-[14px]"
-                >
-                  {t("navCommunity")}
-                </Link>
+        <div className="relative mx-auto flex min-h-[3.25rem] max-w-content items-center px-3 py-2.5 sm:min-h-14 sm:px-4 sm:py-3 lg:px-6">
+          {/* One bar: burger + centered logo (small screens) | desktop: logo + mega nav */}
+          <div className="flex min-w-0 flex-1 items-center gap-2 sm:gap-3 lg:gap-5">
+            <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
+              <div className="landing-header-burger">
+                <LandingMobileMenu />
               </div>
-            </nav>
+              <LanguageSwitcherMobile />
+            </div>
+            <div className="landing-header-nav-desktop text-[13px] xl:text-[14px]">
+              <LogoText href="/" className="min-w-0 shrink-0" />
+              <nav className="flex min-w-0 flex-1 items-center" aria-label="Primary">
+                <div className="flex flex-nowrap items-center gap-0.5 overflow-visible pr-0.5 xl:gap-1">
+                  <MegaMenuFindWork />
+                  <MegaMenuPostJob />
+                  <a
+                    href="#loop"
+                    className="shrink-0 whitespace-nowrap rounded-md px-2 py-2 font-medium text-[#334155] hover:bg-slate-100 hover:text-[#1c2620] xl:px-2.5"
+                  >
+                    {t("navWhy")}
+                  </a>
+                  <Link
+                    href="/community"
+                    className="shrink-0 whitespace-nowrap rounded-md px-2 py-2 font-medium text-[#334155] hover:bg-slate-100 hover:text-[#1c2620] xl:px-2.5"
+                  >
+                    {t("navCommunity")}
+                  </Link>
+                </div>
+              </nav>
+            </div>
           </div>
 
-          <div className="flex shrink-0 items-center gap-1 sm:gap-2">
-            <LanguageSwitcher />
-            <LandingMobileMenu />
+          <div className="landing-header-logo-mobile">
+            <LogoText href="/" className="min-w-0 max-w-full [&>span]:items-center" />
+          </div>
+
+          <div className="landing-header-actions">
+            <LanguageSwitcherDesktop />
             <Link
               href="/auth/login"
-              className="inline-flex shrink-0 whitespace-nowrap rounded-md px-1.5 py-2 text-[12px] font-semibold text-au-ocean hover:underline sm:px-2 sm:text-[13px] xl:text-[14px]"
+              className="inline-flex shrink-0 whitespace-nowrap rounded-md px-1 py-2 text-[11px] font-semibold text-au-ocean hover:underline min-[400px]:px-1.5 min-[400px]:text-[12px] sm:text-[13px] lg:px-2 lg:text-[13px] xl:text-[14px]"
             >
               {t("navLogin")}
             </Link>
-            <Button variant="nav" size="sm" className="!h-9 shrink-0 px-3 text-[13px] sm:!h-10 sm:px-4 sm:text-[14px]" asChild>
+            <Button
+              variant="nav"
+              size="sm"
+              className="!h-9 shrink-0 px-2.5 text-[12px] sm:!h-10 sm:px-3 sm:text-[13px] lg:!h-10 lg:px-4 lg:text-[14px]"
+              asChild
+            >
               <Link href="/auth/signup">{t("navSignup")}</Link>
             </Button>
           </div>

@@ -52,7 +52,6 @@ export function LandingMobileMenu() {
         className={cn(
           "inline-flex min-h-[44px] min-w-[44px] shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-800 shadow-sm transition active:scale-[0.98]",
           "hover:bg-slate-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#00843D]",
-          "lg:hidden",
         )}
         aria-expanded={open}
         aria-controls="landing-mobile-nav-panel"
