@@ -36,7 +36,7 @@ const scrollShell = (desktopCols: Cols) =>
 const gridShellAll = (desktopCols: Cols): string => {
   switch (desktopCols) {
     case 10:
-      return "grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-3 md:gap-5 lg:grid-cols-5 lg:gap-5";
+      return "grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3 md:gap-4 lg:grid-cols-5 lg:gap-4";
     case 4:
       return "grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4 md:gap-5";
     case 5:

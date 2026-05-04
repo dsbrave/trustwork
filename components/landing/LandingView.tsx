@@ -179,35 +179,45 @@ export async function LandingView({ news }: { news: ImmigrationNewsItem[] }) {
                 {t("trendingTitle")}
               </h2>
               <p className="relative mt-2 max-w-2xl text-[15px] leading-relaxed text-[#5e6d64]">{t("trendingSubtitle")}</p>
-              <LandingCardStrip
-                mobileLayout="grid"
-                ariaLabel={t("a11yRegionCategories")}
-                hint={t("a11yCategoryGridHint")}
-                desktopCols={10}
-                className="relative mt-8"
-              >
-                {categories.map(({ key, slug, Icon }) => (
-                  <LandingCardStripItem key={slug}>
-                    <Link
-                      href={`/jobs?category=${slug}`}
-                      className={cn(
-                        "group flex h-full min-h-[116px] flex-col justify-between rounded-[11px] border border-slate-200/95 bg-white p-4 shadow-[0_1px_3px_rgba(15,23,42,0.06)] transition-all duration-200",
-                        "hover:border-au-gum hover:shadow-[0_8px_24px_rgba(0,132,61,0.08)]",
-                        "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#00843D]",
-                      )}
-                    >
-                      <Icon
-                        className="h-7 w-7 shrink-0 text-[#00843D] opacity-[0.92] transition group-hover:opacity-100"
-                        strokeWidth={1.5}
-                        aria-hidden
-                      />
-                      <span className="text-left text-[14px] font-semibold leading-snug tracking-tight text-[#001e00] sm:text-[15px]">
-                        {t(key)}
-                      </span>
-                    </Link>
-                  </LandingCardStripItem>
-                ))}
-              </LandingCardStrip>
+              {/* Compact square tiles: 2 cols on phones, 3 from sm, 5 on large desktop. */}
+              <div className="relative mt-8">
+                <p id="a11y-landing-categories-hint" className="sr-only">
+                  {t("a11yCategoryGridHint")}
+                </p>
+                <div
+                  role="region"
+                  aria-label={t("a11yRegionCategories")}
+                  aria-describedby="a11y-landing-categories-hint"
+                  tabIndex={0}
+                  className={cn(
+                    "grid w-full min-w-0 grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3 md:gap-4 lg:grid-cols-5 lg:gap-4",
+                    "rounded-md outline-none focus-visible:ring-2 focus-visible:ring-[#00843D] focus-visible:ring-offset-2",
+                  )}
+                >
+                  {categories.map(({ key, slug, Icon }) => (
+                    <div key={slug} className="min-w-0">
+                      <Link
+                        href={`/jobs?category=${slug}`}
+                        className={cn(
+                          "group flex aspect-square min-h-0 w-full flex-col items-center justify-center gap-1.5 rounded-[10px] border border-slate-200/95 bg-white p-2 shadow-[0_1px_3px_rgba(15,23,42,0.06)] transition-all duration-200",
+                          "sm:gap-2 sm:rounded-[11px] sm:p-2.5",
+                          "hover:border-au-gum hover:shadow-[0_8px_24px_rgba(0,132,61,0.08)]",
+                          "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#00843D]",
+                        )}
+                      >
+                        <Icon
+                          className="h-6 w-6 shrink-0 text-[#00843D] opacity-[0.92] transition group-hover:opacity-100 sm:h-7 sm:w-7"
+                          strokeWidth={1.5}
+                          aria-hidden
+                        />
+                        <span className="line-clamp-2 text-center text-[11px] font-semibold leading-tight tracking-tight text-[#001e00] sm:text-[12px] md:text-[13px] lg:text-[13px]">
+                          {t(key)}
+                        </span>
+                      </Link>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </section>
