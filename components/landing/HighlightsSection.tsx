@@ -6,6 +6,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Link } from "@/navigation";
+import { LandingCardStrip, LandingCardStripItem } from "@/components/landing/LandingCardStrip";
 
 type Mode = "worker" | "employer";
 
@@ -128,11 +129,18 @@ export function HighlightsSection() {
           </div>
         </div>
 
-        <div className="mt-10 grid gap-10 md:grid-cols-3 md:gap-8 lg:mt-14 lg:gap-10">
+        <LandingCardStrip
+          ariaLabel={t("a11yRegionHighlights")}
+          hint={t("a11yHorizontalScrollHint")}
+          desktopCols={3}
+          className="mt-10 lg:mt-14"
+          innerClassName="lg:gap-10"
+        >
           {panels.map((panel, i) => {
             const Icon = panel.icon;
             return (
-              <article key={`${mode}-${i}`} className="flex flex-col">
+              <LandingCardStripItem key={`${mode}-${i}`}>
+              <article className="flex h-full flex-col">
                 <div
                   className={cn(
                     "relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-slate-200/80 bg-gradient-to-br shadow-sm",
@@ -140,7 +148,7 @@ export function HighlightsSection() {
                   )}
                 >
                   {panel.proCorner === "green" ? (
-                    <span className="absolute right-3 top-3 rounded-full bg-[#157f3c] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-white shadow-sm">
+                    <span className="absolute right-3 top-3 rounded-full bg-[#00843D] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-white shadow-sm">
                       {t("highlightsCardBadge")}
                     </span>
                   ) : null}
@@ -162,16 +170,17 @@ export function HighlightsSection() {
                 <p className="mt-3 flex-1 text-[14px] leading-relaxed text-slate-600">{t(panel.descKey)}</p>
                 <Button
                   variant="outline"
-                  className="mt-6 w-full min-h-[44px] border-[#157f3c] bg-[#157f3c] text-white hover:bg-[#136e34] hover:text-white sm:w-auto sm:self-start"
+                  className="mt-6 w-full min-h-[44px] border-[#00843D] bg-[#00843D] text-white hover:bg-[#006d32] hover:text-white sm:w-auto sm:self-start"
                   size="sm"
                   asChild
                 >
                   <Link href={panel.href}>{t(panel.ctaKey)}</Link>
                 </Button>
               </article>
+              </LandingCardStripItem>
             );
           })}
-        </div>
+        </LandingCardStrip>
       </div>
     </section>
   );

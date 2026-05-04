@@ -29,6 +29,7 @@ import { Link } from "@/navigation";
 import { HeroAbstractBackdrop } from "./HeroAbstractBackdrop";
 import { HeroSearch } from "./HeroSearch";
 import { HighlightsSection } from "./HighlightsSection";
+import { LandingCardStrip, LandingCardStripItem } from "./LandingCardStrip";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { MegaMenuFindWork } from "./MegaMenuFindWork";
 import { MegaMenuPostJob } from "./MegaMenuPostJob";
@@ -178,28 +179,34 @@ export async function LandingView({ news }: { news: ImmigrationNewsItem[] }) {
                 {t("trendingTitle")}
               </h2>
               <p className="relative mt-2 max-w-2xl text-[15px] leading-relaxed text-[#5e6d64]">{t("trendingSubtitle")}</p>
-              <div className="relative mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-5">
+              <LandingCardStrip
+                ariaLabel={t("a11yRegionCategories")}
+                hint={t("a11yHorizontalScrollHint")}
+                desktopCols={10}
+                className="relative mt-8"
+              >
                 {categories.map(({ key, slug, Icon }) => (
-                  <Link
-                    key={slug}
-                    href={`/jobs?category=${slug}`}
-                    className={cn(
-                      "group flex min-h-[116px] flex-col justify-between rounded-[11px] border border-slate-200/95 bg-white p-4 shadow-[0_1px_3px_rgba(15,23,42,0.06)] transition-all duration-200",
-                      "hover:border-[#157f3c] hover:shadow-[0_8px_24px_rgba(21,127,60,0.08)]",
-                      "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#157f3c]",
-                    )}
-                  >
-                    <Icon
-                      className="h-7 w-7 shrink-0 text-[#157f3c] opacity-[0.92] transition group-hover:opacity-100"
-                      strokeWidth={1.5}
-                      aria-hidden
-                    />
-                    <span className="text-left text-[14px] font-semibold leading-snug tracking-tight text-[#001e00] sm:text-[15px]">
-                      {t(key)}
-                    </span>
-                  </Link>
+                  <LandingCardStripItem key={slug}>
+                    <Link
+                      href={`/jobs?category=${slug}`}
+                      className={cn(
+                        "group flex h-full min-h-[116px] flex-col justify-between rounded-[11px] border border-slate-200/95 bg-white p-4 shadow-[0_1px_3px_rgba(15,23,42,0.06)] transition-all duration-200",
+                        "hover:border-au-gum hover:shadow-[0_8px_24px_rgba(0,132,61,0.08)]",
+                        "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#00843D]",
+                      )}
+                    >
+                      <Icon
+                        className="h-7 w-7 shrink-0 text-[#00843D] opacity-[0.92] transition group-hover:opacity-100"
+                        strokeWidth={1.5}
+                        aria-hidden
+                      />
+                      <span className="text-left text-[14px] font-semibold leading-snug tracking-tight text-[#001e00] sm:text-[15px]">
+                        {t(key)}
+                      </span>
+                    </Link>
+                  </LandingCardStripItem>
                 ))}
-              </div>
+              </LandingCardStrip>
             </div>
           </div>
         </section>
@@ -219,7 +226,12 @@ export async function LandingView({ news }: { news: ImmigrationNewsItem[] }) {
               </h2>
               <p className="mt-3 text-[15px] leading-relaxed text-[#5e6d64] sm:text-[16px]">{t("stackSubtitle")}</p>
             </div>
-            <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5">
+            <LandingCardStrip
+              ariaLabel={t("a11yRegionTrustLoop")}
+              hint={t("a11yHorizontalScrollHint")}
+              desktopCols={4}
+              className="mt-12"
+            >
               {(
                 [
                   { step: "01", titleKey: "stack1Title", descKey: "stack1Desc", Icon: Wallet },
@@ -228,23 +240,22 @@ export async function LandingView({ news }: { news: ImmigrationNewsItem[] }) {
                   { step: "04", titleKey: "stack4Title", descKey: "stack4Desc", Icon: CircleDollarSign },
                 ] as const
               ).map(({ step, titleKey, descKey, Icon }) => (
-                <div
-                  key={step}
-                  className="relative rounded-2xl border border-black/[0.07] bg-[#fafafa] p-6 shadow-sm transition hover:border-au-gum/25 hover:shadow-md"
-                >
-                  <span className="font-[family-name:var(--font-outfit)] text-[11px] font-bold tabular-nums text-au-gumbright">
-                    {step}
-                  </span>
-                  <div className="mt-3 flex h-10 w-10 items-center justify-center rounded-xl bg-white text-au-ocean ring-1 ring-black/[0.06]">
-                    <Icon className="h-5 w-5" strokeWidth={1.75} aria-hidden />
+                <LandingCardStripItem key={step}>
+                  <div className="relative h-full rounded-2xl border border-black/[0.07] bg-[#fafafa] p-6 shadow-sm transition hover:border-[#00843D]/30 hover:shadow-md">
+                    <span className="font-[family-name:var(--font-outfit)] text-[11px] font-bold tabular-nums text-[#00843D]">
+                      {step}
+                    </span>
+                    <div className="mt-3 flex h-10 w-10 items-center justify-center rounded-xl bg-white text-au-ocean ring-1 ring-black/[0.06]">
+                      <Icon className="h-5 w-5" strokeWidth={1.75} aria-hidden />
+                    </div>
+                    <h3 className="mt-4 font-[family-name:var(--font-outfit)] text-[16px] font-semibold text-[#001e00]">
+                      {t(titleKey)}
+                    </h3>
+                    <p className="mt-2 text-[14px] leading-relaxed text-[#5e6d64]">{t(descKey)}</p>
                   </div>
-                  <h3 className="mt-4 font-[family-name:var(--font-outfit)] text-[16px] font-semibold text-[#001e00]">
-                    {t(titleKey)}
-                  </h3>
-                  <p className="mt-2 text-[14px] leading-relaxed text-[#5e6d64]">{t(descKey)}</p>
-                </div>
+                </LandingCardStripItem>
               ))}
-            </div>
+            </LandingCardStrip>
           </div>
         </section>
 
@@ -258,8 +269,15 @@ export async function LandingView({ news }: { news: ImmigrationNewsItem[] }) {
               {t("pricingSectionSubtitle")}
             </p>
 
-            <div className="mt-10 grid gap-6 lg:grid-cols-2 lg:gap-8 lg:items-stretch">
-              <div className="flex min-h-0 flex-col rounded-2xl border border-slate-200/95 bg-white p-8 shadow-[0_1px_3px_rgba(15,23,42,0.06)] sm:p-10">
+            <LandingCardStrip
+              ariaLabel={t("a11yRegionPricing")}
+              hint={t("a11yHorizontalScrollHint")}
+              desktopCols={2}
+              className="mt-10"
+              innerClassName="lg:items-stretch"
+            >
+              <LandingCardStripItem className="basis-[min(92vw,440px)] md:basis-auto">
+              <div className="flex h-full min-h-0 flex-col rounded-2xl border border-slate-200/95 bg-white p-8 shadow-[0_1px_3px_rgba(15,23,42,0.06)] sm:p-10">
                 <h3 className="text-[20px] font-semibold text-[#001e00] sm:text-[22px]">{t("pricingPlanStarterName")}</h3>
                 <p className="mt-1 text-[14px] leading-relaxed text-[#5e6d64]">{t("pricingPlanStarterTagline")}</p>
                 <p className="mt-6 text-[17px] font-semibold leading-snug text-[#001e00]">{t("pricingPlanStarterFee")}</p>
@@ -269,14 +287,14 @@ export async function LandingView({ news }: { news: ImmigrationNewsItem[] }) {
                 <ul className="mt-3 flex flex-1 flex-col gap-2.5">
                   {pricingStarterFeatures.map((key) => (
                     <li key={key} className="flex gap-3 text-[14px] leading-snug text-[#5e6d64]">
-                      <Check className="h-5 w-5 shrink-0 text-[#157f3c]" strokeWidth={2} aria-hidden />
+                      <Check className="h-5 w-5 shrink-0 text-au-gum" strokeWidth={2} aria-hidden />
                       <span>{t(key)}</span>
                     </li>
                   ))}
                 </ul>
                 <Button
                   variant="outline"
-                  className="mt-8 w-full border-[#157f3c] text-[#157f3c] hover:bg-emerald-50 hover:text-[#0f5c2e] sm:w-auto"
+                  className="mt-8 w-full border-au-gum text-au-gum hover:bg-emerald-50 hover:text-au-gumbright sm:w-auto"
                   asChild
                 >
                   <Link href="/auth/signup?role=employer" className="gap-2">
@@ -285,9 +303,11 @@ export async function LandingView({ news }: { news: ImmigrationNewsItem[] }) {
                   </Link>
                 </Button>
               </div>
+              </LandingCardStripItem>
 
-              <div className="relative flex min-h-0 flex-col rounded-2xl border-2 border-[#157f3c]/30 bg-white p-8 shadow-[0_8px_32px_rgba(21,127,60,0.12)] sm:p-10">
-                <span className="absolute right-4 top-4 rounded-full bg-[#157f3c] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-white sm:right-5 sm:top-5">
+              <LandingCardStripItem className="basis-[min(92vw,440px)] md:basis-auto">
+              <div className="relative flex h-full min-h-0 flex-col rounded-2xl border-2 border-[#00843D]/35 bg-white p-8 shadow-[0_8px_32px_rgba(0,132,61,0.12)] sm:p-10">
+                <span className="absolute right-4 top-4 rounded-full bg-[#00843D] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-white sm:right-5 sm:top-5">
                   {t("pricingPopularBadge")}
                 </span>
                 <h3 className="pr-20 text-[20px] font-semibold text-[#001e00] sm:text-[22px]">{t("pricingPlanPlusName")}</h3>
@@ -299,7 +319,7 @@ export async function LandingView({ news }: { news: ImmigrationNewsItem[] }) {
                 <ul className="mt-3 flex flex-1 flex-col gap-2.5">
                   {pricingPlusFeatures.map((key) => (
                     <li key={key} className="flex gap-3 text-[14px] leading-snug text-[#5e6d64]">
-                      <Check className="h-5 w-5 shrink-0 text-[#157f3c]" strokeWidth={2} aria-hidden />
+                      <Check className="h-5 w-5 shrink-0 text-au-gum" strokeWidth={2} aria-hidden />
                       <span>{t(key)}</span>
                     </li>
                   ))}
@@ -311,13 +331,14 @@ export async function LandingView({ news }: { news: ImmigrationNewsItem[] }) {
                   </Link>
                 </Button>
               </div>
-            </div>
+              </LandingCardStripItem>
+            </LandingCardStrip>
 
             <p className="mt-8 text-center text-[14px] leading-relaxed text-[#5e6d64]">{t("pricingWorkerNote")}</p>
             <p className="mt-4 text-center">
               <Link
                 href="/faq"
-                className="text-[14px] font-semibold text-[#157f3c] underline-offset-4 hover:underline"
+                className="text-[14px] font-semibold text-[#00843D] underline-offset-4 hover:underline"
               >
                 {t("pricingCompareAll")}
               </Link>
@@ -330,18 +351,25 @@ export async function LandingView({ news }: { news: ImmigrationNewsItem[] }) {
           <div className="mx-auto max-w-content px-4 lg:px-6">
             <h2 className="text-center text-[24px] font-semibold text-[#001e00] sm:text-[28px]">{t("statsTitle")}</h2>
             <p className="mx-auto mt-2 max-w-2xl text-center text-[15px] text-[#5e6d64]">{t("statsSubtitle")}</p>
-            <div className="mt-10 grid gap-6 sm:grid-cols-3">
+            <LandingCardStrip
+              ariaLabel={t("a11yRegionStats")}
+              hint={t("a11yHorizontalScrollHint")}
+              desktopCols={3}
+              className="mt-10"
+            >
               {[
                 { v: "stat1Value", l: "stat1Label" },
                 { v: "stat2Value", l: "stat2Label" },
                 { v: "stat3Value", l: "stat3Label" },
               ].map(({ v, l }) => (
-                <div key={v} className="rounded-lg border border-black/[0.06] bg-[#fafafa] px-6 py-8 text-center">
-                  <p className="text-[36px] font-semibold tabular-nums text-au-ocean">{t(v)}</p>
-                  <p className="mt-1 text-[14px] font-medium text-[#5e6d64]">{t(l)}</p>
-                </div>
+                <LandingCardStripItem key={v}>
+                  <div className="h-full rounded-2xl border border-black/[0.07] bg-[#fafafa] px-6 py-8 text-center shadow-sm">
+                    <p className="text-[36px] font-semibold tabular-nums text-au-ocean">{t(v)}</p>
+                    <p className="mt-1 text-[14px] font-medium text-[#5e6d64]">{t(l)}</p>
+                  </div>
+                </LandingCardStripItem>
               ))}
-            </div>
+            </LandingCardStrip>
             <p className="mx-auto mt-8 max-w-3xl text-center text-[12px] leading-relaxed text-[#8a9590]">{t("statsFootnote")}</p>
           </div>
         </section>
@@ -374,26 +402,35 @@ export async function LandingView({ news }: { news: ImmigrationNewsItem[] }) {
           </div>
         </section>
 
-        {/* ——— Testimonials ——— */}
-        <section className="border-b border-black/[0.06] bg-[#f0f4f2] py-16 lg:py-20">
+        {/* ——— Testimonials (aligned with Trust Loop cards) ——— */}
+        <section className="border-b border-slate-200/80 bg-white py-16 lg:py-20">
           <div className="mx-auto max-w-content px-4 lg:px-6">
-            <h2 className="text-center text-[28px] font-semibold text-[#001e00]">{t("testimonialsTitle")}</h2>
-            <p className="mx-auto mt-2 max-w-2xl text-center text-[15px] text-[#5e6d64]">{t("testimonialsSubtitle")}</p>
-            <div className="mt-10 grid gap-6 md:grid-cols-3">
+            <div className="mx-auto max-w-3xl text-center">
+              <p className="text-[12px] font-semibold uppercase tracking-[0.22em] text-au-reef">{t("testimonialsEyebrow")}</p>
+              <h2 className="mt-3 font-[family-name:var(--font-outfit)] text-[26px] font-semibold tracking-tight text-[#001e00] sm:text-[28px]">
+                {t("testimonialsTitle")}
+              </h2>
+              <p className="mt-3 text-[15px] leading-relaxed text-[#5e6d64] sm:text-[16px]">{t("testimonialsSubtitle")}</p>
+            </div>
+            <LandingCardStrip
+              ariaLabel={t("a11yRegionTestimonials")}
+              hint={t("a11yHorizontalScrollHint")}
+              desktopCols={3}
+              className="mt-10"
+            >
               {[
                 { quote: "tWorker1Quote", name: "tWorker1Name" },
                 { quote: "tWorker2Quote", name: "tWorker2Name" },
                 { quote: "tEmployerQuote", name: "tEmployerName" },
               ].map(({ quote, name }) => (
-                <blockquote
-                  key={quote}
-                  className="rounded-lg border border-black/[0.06] bg-white p-6 shadow-card"
-                >
-                  <p className="text-[15px] leading-relaxed text-[#001e00]">&ldquo;{t(quote)}&rdquo;</p>
-                  <footer className="mt-4 text-[13px] font-semibold text-au-gum">{t(name)}</footer>
-                </blockquote>
+                <LandingCardStripItem key={quote}>
+                  <blockquote className="flex h-full flex-col rounded-2xl border border-black/[0.07] bg-[#fafafa] p-6 shadow-sm">
+                    <p className="text-[15px] leading-relaxed text-[#001e00]">&ldquo;{t(quote)}&rdquo;</p>
+                    <footer className="mt-4 text-[13px] font-semibold text-[#00843D]">{t(name)}</footer>
+                  </blockquote>
+                </LandingCardStripItem>
               ))}
-            </div>
+            </LandingCardStrip>
           </div>
         </section>
 
@@ -420,32 +457,21 @@ export async function LandingView({ news }: { news: ImmigrationNewsItem[] }) {
           </div>
         </section>
 
-        {/* ——— News (aligned with sector cards + community teaser) ——— */}
-        <section id="news" className="scroll-mt-24 border-b border-slate-200/80 bg-[#f5f6f4] py-14 lg:py-20">
+        {/* ——— News (same voice as Trust Loop + horizontal strip on mobile) ——— */}
+        <section id="news" className="scroll-mt-24 border-b border-slate-200/80 bg-white py-14 lg:py-20">
           <div className="mx-auto max-w-content px-4 lg:px-6">
-            <div className="relative overflow-hidden rounded-2xl border border-slate-200/90 bg-white p-6 shadow-[0_12px_40px_rgba(15,23,42,0.06)] sm:p-8 lg:p-10">
-              <div
-                className="pointer-events-none absolute -right-16 -top-20 h-48 w-48 rounded-full bg-teal-400/10 blur-3xl"
-                aria-hidden
-              />
-              <div
-                className="pointer-events-none absolute -bottom-12 -left-10 h-40 w-40 rounded-full bg-emerald-300/8 blur-3xl"
-                aria-hidden
-              />
-
-              <div className="relative flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between lg:gap-10">
-                <div className="min-w-0">
-                  <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-teal-900/75">
-                    {t("newsEyebrow")}
-                  </p>
-                  <h2 className="mt-2 font-[family-name:var(--font-outfit)] text-[24px] font-semibold tracking-tight text-[#001e00] sm:text-[26px] lg:text-[28px]">
+            <div className="rounded-2xl border border-black/[0.07] bg-[#fafafa] p-6 shadow-sm sm:p-8 lg:p-10">
+              <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between lg:gap-10">
+                <div className="mx-auto max-w-3xl text-center lg:mx-0 lg:max-w-none lg:text-left">
+                  <p className="text-[12px] font-semibold uppercase tracking-[0.22em] text-au-reef">{t("newsEyebrow")}</p>
+                  <h2 className="mt-3 font-[family-name:var(--font-outfit)] text-[26px] font-semibold tracking-tight text-[#001e00] sm:text-[28px]">
                     {t("newsTitle")}
                   </h2>
-                  <p className="mt-2 max-w-xl text-[15px] leading-relaxed text-[#5e6d64]">{t("newsSubtitle")}</p>
+                  <p className="mt-3 text-[15px] leading-relaxed text-[#5e6d64] sm:text-[16px]">{t("newsSubtitle")}</p>
                 </div>
                 <Button
                   variant="outline"
-                  className="relative shrink-0 border-[#157f3c] text-[#157f3c] hover:bg-emerald-50 hover:text-[#0f5c2e]"
+                  className="relative shrink-0 self-center border-[#00843D] text-[#00843D] hover:bg-emerald-50 hover:text-[#006631] lg:self-start"
                   asChild
                 >
                   <Link href="/jobs" className="gap-2">
@@ -455,33 +481,39 @@ export async function LandingView({ news }: { news: ImmigrationNewsItem[] }) {
                 </Button>
               </div>
 
-              <ul className="relative mt-10 grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
-                {news.length === 0 ? (
-                  <li className="col-span-full rounded-[11px] border border-dashed border-slate-300/90 bg-[#fafafa] px-6 py-10 text-center text-[15px] text-[#5e6d64]">
-                    {t("newsEmpty")}
-                  </li>
-                ) : (
-                  news.slice(0, 6).map((item, i) => {
+              {news.length === 0 ? (
+                <p className="relative mt-10 rounded-2xl border border-dashed border-slate-300/90 bg-white px-6 py-10 text-center text-[15px] text-[#5e6d64]">
+                  {t("newsEmpty")}
+                </p>
+              ) : (
+                <LandingCardStrip
+                  asList
+                  ariaLabel={t("a11yRegionNews")}
+                  hint={t("a11yHorizontalScrollHint")}
+                  desktopCols={3}
+                  className="relative mt-10"
+                >
+                  {news.slice(0, 6).map((item, i) => {
                     const catKey = newsCats[i % newsCats.length];
                     const CatIcon = newsCatIcons[i % newsCatIcons.length];
                     return (
-                      <li key={`${item.link}-${i}`}>
+                      <LandingCardStripItem as="li" key={`${item.link}-${i}`}>
                         <a
                           href={item.link}
                           target="_blank"
                           rel="noopener noreferrer"
                           className={cn(
-                            "group flex h-full min-h-[148px] flex-col rounded-[11px] border border-slate-200/95 bg-white p-4 shadow-[0_1px_3px_rgba(15,23,42,0.06)] transition-all duration-200",
-                            "hover:border-[#157f3c] hover:shadow-[0_8px_24px_rgba(21,127,60,0.08)]",
-                            "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#157f3c]",
+                            "group flex h-full min-h-[148px] flex-col rounded-2xl border border-black/[0.07] bg-white p-4 shadow-sm transition-all duration-200",
+                            "hover:border-[#00843D]/40 hover:shadow-md",
+                            "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#00843D]",
                           )}
                         >
                           <div className="flex items-start justify-between gap-3">
-                            <span className="inline-flex w-fit items-center rounded-md bg-[#157f3c]/8 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-[#0f5c2e]">
+                            <span className="inline-flex w-fit items-center rounded-md bg-[#00843D]/10 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-[#006631]">
                               {t(catKey)}
                             </span>
                             <CatIcon
-                              className="h-7 w-7 shrink-0 text-[#157f3c] opacity-90 transition group-hover:opacity-100"
+                              className="h-7 w-7 shrink-0 text-[#00843D] opacity-90 transition group-hover:opacity-100"
                               strokeWidth={1.5}
                               aria-hidden
                             />
@@ -490,23 +522,23 @@ export async function LandingView({ news }: { news: ImmigrationNewsItem[] }) {
                             {item.title}
                           </h3>
                           <p className="mt-2 text-left text-[13px] text-[#5e6d64]">{item.source}</p>
-                          <span className="mt-4 inline-flex items-center gap-1 text-[13px] font-semibold text-[#157f3c] group-hover:underline">
+                          <span className="mt-4 inline-flex items-center gap-1 text-[13px] font-semibold text-[#00843D] group-hover:underline">
                             {t("newsReadMore")}
-                            <ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-0.5" />
+                            <ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-0.5" aria-hidden />
                           </span>
                         </a>
-                      </li>
+                      </LandingCardStripItem>
                     );
-                  })
-                )}
-              </ul>
+                  })}
+                </LandingCardStrip>
+              )}
             </div>
           </div>
         </section>
       </main>
 
       {/* ——— Footer (Upwork-like columns) ——— */}
-      <footer className="border-t border-black/[0.08] bg-[#001e00] text-white">
+      <footer className="border-t border-[#e8c547]/35 bg-[#0b1f14] text-white">
         <div className="mx-auto grid max-w-content gap-10 px-4 py-14 sm:grid-cols-2 lg:grid-cols-5 lg:gap-8 lg:px-6">
           <div className="lg:col-span-2">
             <LogoText href="/" variant="footer" />
@@ -518,22 +550,22 @@ export async function LandingView({ news }: { news: ImmigrationNewsItem[] }) {
             <p className="text-[12px] font-bold uppercase tracking-wider text-white/50">{t("footerDiscover")}</p>
             <ul className="mt-4 space-y-2 text-[14px]">
               <li>
-                <Link href="/jobs" className="text-white/90 hover:text-white hover:underline">
+                <Link href="/jobs" className="text-white/90 hover:text-[#f5e7a3] hover:underline">
                   {t("footerBrowseJobs")}
                 </Link>
               </li>
               <li>
-                <Link href="/community" className="text-white/90 hover:text-white hover:underline">
+                <Link href="/community" className="text-white/90 hover:text-[#f5e7a3] hover:underline">
                   {t("footerCommunity")}
                 </Link>
               </li>
               <li>
-                <Link href="/auth/signup?role=employer" className="text-white/90 hover:text-white hover:underline">
+                <Link href="/auth/signup?role=employer" className="text-white/90 hover:text-[#f5e7a3] hover:underline">
                   {t("footerPostJob")}
                 </Link>
               </li>
               <li>
-                <a href="#" className="text-white/90 hover:text-white hover:underline">
+                <a href="#" className="text-white/90 hover:text-[#f5e7a3] hover:underline">
                   {t("footerPricing")}
                 </a>
               </li>
@@ -543,12 +575,12 @@ export async function LandingView({ news }: { news: ImmigrationNewsItem[] }) {
             <p className="text-[12px] font-bold uppercase tracking-wider text-white/50">{t("footerTrustTitle")}</p>
             <ul className="mt-4 space-y-2 text-[14px]">
               <li>
-                <Link href="/faq" className="text-white/90 hover:text-white hover:underline">
+                <Link href="/faq" className="text-white/90 hover:text-[#f5e7a3] hover:underline">
                   {t("footerVerification")}
                 </Link>
               </li>
               <li>
-                <a href="#" className="text-white/90 hover:text-white hover:underline">
+                <a href="#" className="text-white/90 hover:text-[#f5e7a3] hover:underline">
                   {t("footerDisputes")}
                 </a>
               </li>
@@ -558,12 +590,12 @@ export async function LandingView({ news }: { news: ImmigrationNewsItem[] }) {
             <p className="text-[12px] font-bold uppercase tracking-wider text-white/50">{t("footerResourcesTitle")}</p>
             <ul className="mt-4 space-y-2 text-[14px]">
               <li>
-                <Link href="/faq" className="text-white/90 hover:text-white hover:underline">
+                <Link href="/faq" className="text-white/90 hover:text-[#f5e7a3] hover:underline">
                   {t("footerFaq")}
                 </Link>
               </li>
               <li>
-                <a href="#news" className="text-white/90 hover:text-white hover:underline">
+                <a href="#news" className="text-white/90 hover:text-[#f5e7a3] hover:underline">
                   {t("footerNews")}
                 </a>
               </li>
@@ -571,25 +603,25 @@ export async function LandingView({ news }: { news: ImmigrationNewsItem[] }) {
             <p className="mt-6 text-[12px] font-bold uppercase tracking-wider text-white/50">{t("footerCompanyTitle")}</p>
             <ul className="mt-2 space-y-2 text-[14px]">
               <li>
-                <Link href="/about" className="text-white/90 hover:text-white hover:underline">
+                <Link href="/about" className="text-white/90 hover:text-[#f5e7a3] hover:underline">
                   {t("footerAbout")}
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="text-white/90 hover:text-white hover:underline">
+                <Link href="/contact" className="text-white/90 hover:text-[#f5e7a3] hover:underline">
                   {t("footerContact")}
                 </Link>
               </li>
             </ul>
           </div>
         </div>
-        <div className="border-t border-white/10">
+        <div className="border-t border-[#e8c547]/25">
           <div className="mx-auto flex max-w-content flex-col gap-4 px-4 py-6 text-[13px] text-white/60 sm:flex-row sm:items-center sm:justify-between lg:px-6">
             <div className="flex flex-wrap gap-x-6 gap-y-2">
-              <Link href="/privacy" className="hover:text-white hover:underline">
+              <Link href="/privacy" className="text-white/70 hover:text-[#f5e7a3] hover:underline">
                 {t("footerPrivacy")}
               </Link>
-              <Link href="/terms" className="hover:text-white hover:underline">
+              <Link href="/terms" className="text-white/70 hover:text-[#f5e7a3] hover:underline">
                 {t("footerTerms")}
               </Link>
             </div>
