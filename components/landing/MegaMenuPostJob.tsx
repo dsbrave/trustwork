@@ -17,18 +17,33 @@ export function MegaMenuPostJob() {
 
   const openMenu = useCallback(() => {
     if (closeTimer.current) clearTimeout(closeTimer.current);
+    window.dispatchEvent(new CustomEvent("landing-megamenu-open", { detail: { source: "post" } }));
     setOpen(true);
   }, []);
 
   const scheduleClose = useCallback(() => {
-    closeTimer.current = setTimeout(() => setOpen(false), 220);
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    closeTimer.current = setTimeout(() => setOpen(false), 90);
+  }, []);
+
+  const closeNow = useCallback(() => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    setOpen(false);
   }, []);
 
   useEffect(() => {
+    const onPeerOpen = (evt: Event) => {
+      const detail = (evt as CustomEvent<{ source?: string }>).detail;
+      if (detail?.source !== "post") {
+        closeNow();
+      }
+    };
+    window.addEventListener("landing-megamenu-open", onPeerOpen as EventListener);
     return () => {
       if (closeTimer.current) clearTimeout(closeTimer.current);
+      window.removeEventListener("landing-megamenu-open", onPeerOpen as EventListener);
     };
-  }, []);
+  }, [closeNow]);
 
   return (
     <>

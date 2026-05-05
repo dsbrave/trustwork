@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 import { Link } from "@/navigation";
 
 type Props = {
@@ -7,32 +8,24 @@ type Props = {
   className?: string;
 };
 
-/** Wordmark only — no symbol. Uses Outfit (see root layout). */
+/** TrustWork wordmark logo (SVG in `/public/logo/TW-logo.svg`). */
 export function LogoText({ href = "/", variant = "header", className }: Props) {
   const isFooter = variant === "footer";
   const isNeutral = variant === "neutral";
 
   const inner = (
-    <span className="inline-flex flex-col leading-[1.05]">
-      <span
-        className={cn(
-          "font-[family-name:var(--font-outfit)] text-[1.2rem] font-semibold tracking-[-0.05em] sm:text-[1.35rem]",
-          isFooter && "text-white",
-          isNeutral && "text-[#001e00]",
-          !isFooter && !isNeutral && "text-[#001e00]",
-        )}
-      >
-        TrustWork
-      </span>
-      <span
-        className={cn(
-          "mt-0.5 text-[0.58rem] font-medium uppercase tracking-[0.32em]",
-          isFooter ? "text-white/55" : "text-[#6b7c72]",
-        )}
-      >
-        Australia
-      </span>
-    </span>
+    <Image
+      src="/logo/TW-logo.svg"
+      alt="TrustWork Australia"
+      width={176}
+      height={54}
+      priority={variant === "header"}
+      className={cn(
+        "h-auto w-[7.6rem] max-w-full sm:w-[8.6rem]",
+        isFooter && "brightness-0 invert",
+        isNeutral && "brightness-95",
+      )}
+    />
   );
 
   if (href) {
@@ -49,5 +42,5 @@ export function LogoText({ href = "/", variant = "header", className }: Props) {
     );
   }
 
-  return <div className={className}>{inner}</div>;
+  return <div className={cn("inline-block", className)}>{inner}</div>;
 }
