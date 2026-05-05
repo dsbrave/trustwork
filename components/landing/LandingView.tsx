@@ -229,11 +229,11 @@ export async function LandingView({ news }: { news: ImmigrationNewsItem[] }) {
                         )}
                       >
                         <Icon
-                          className="h-6 w-6 shrink-0 text-[#00843D] opacity-[0.92] transition group-hover:opacity-100 sm:h-7 sm:w-7"
+                          className="h-7 w-7 shrink-0 text-[#00843D] opacity-[0.92] transition group-hover:opacity-100 sm:h-8 sm:w-8"
                           strokeWidth={1.5}
                           aria-hidden
                         />
-                        <span className="line-clamp-2 text-center text-[11px] font-semibold leading-tight tracking-tight text-[#001e00] sm:text-[12px] md:text-[13px] lg:text-[13px]">
+                        <span className="line-clamp-2 text-center text-[12px] font-semibold leading-tight tracking-tight text-[#001e00] sm:text-[13px] md:text-[14px] lg:text-[14px]">
                           {t(key)}
                         </span>
                       </Link>
