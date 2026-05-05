@@ -5,19 +5,15 @@ import {
   Briefcase,
   Check,
   ChefHat,
-  CircleDollarSign,
   Globe2,
   HardHat,
   HeartHandshake,
   Laptop,
-  Layers,
-  MapPin,
   MessageCircle,
   Scale,
   ShieldCheck,
   ShoppingBag,
   Sparkles,
-  Wallet,
   Warehouse,
 } from "lucide-react";
 import { getTranslations } from "next-intl/server";
@@ -38,31 +34,6 @@ const newsCats = ["newsCategoryVisas", "newsCategoryWork", "newsCategoryRights"]
 const newsCatIcons = [Globe2, Briefcase, Scale] as const;
 const pricingStarterFeatures = ["pricingPlanStarterF1", "pricingPlanStarterF2", "pricingPlanStarterF3"] as const;
 const pricingPlusFeatures = ["pricingPlanPlusF1", "pricingPlanPlusF2", "pricingPlanPlusF3"] as const;
-
-/** Visual accents for Trust Loop steps — cohesive AU greens, slight variation per step */
-const TRUST_LOOP_CARD_THEMES = [
-  {
-    bar: "from-[#00843D] via-emerald-500 to-teal-600",
-    surface:
-      "bg-gradient-to-b from-white via-white to-emerald-50/55",
-    iconSurface: "bg-gradient-to-br from-emerald-50 to-white",
-  },
-  {
-    bar: "from-teal-600 via-[#00843D] to-emerald-600",
-    surface: "bg-gradient-to-b from-white via-teal-50/25 to-teal-50/45",
-    iconSurface: "bg-gradient-to-br from-teal-50 to-white",
-  },
-  {
-    bar: "from-emerald-600 via-teal-600 to-[#0f766e]",
-    surface: "bg-gradient-to-b from-white via-cyan-50/20 to-emerald-50/40",
-    iconSurface: "bg-gradient-to-br from-cyan-50/90 to-white",
-  },
-  {
-    bar: "from-[#059669] via-[#00843D] to-[#047857]",
-    surface: "bg-gradient-to-b from-white via-emerald-50/40 to-teal-50/35",
-    iconSurface: "bg-gradient-to-br from-emerald-100/90 to-white",
-  },
-] as const;
 
 export async function LandingView({ news }: { news: ImmigrationNewsItem[] }) {
   const t = await getTranslations("Landing");
@@ -145,7 +116,7 @@ export async function LandingView({ news }: { news: ImmigrationNewsItem[] }) {
         {/* ——— Hero (video background, readable overlays) ——— */}
         <section className="border-b border-slate-200/80 bg-[#fafafa]">
           <div className="mx-auto max-w-content px-4 pb-3 pt-4 sm:px-4 sm:pb-4 sm:pt-6 lg:px-6 lg:pb-6 lg:pt-8">
-            <div className="relative h-[25rem] overflow-hidden rounded-2xl border border-slate-200/70 bg-[#0f1720] shadow-[0_16px_48px_rgba(15,23,42,0.12)] sm:h-[27rem] sm:rounded-[1.75rem] lg:h-[28rem] lg:rounded-[2rem] xl:h-[30rem]">
+            <div className="relative min-h-[30rem] overflow-hidden rounded-2xl border border-slate-200/70 bg-[#0f1720] shadow-[0_16px_48px_rgba(15,23,42,0.12)] sm:min-h-[32rem] sm:rounded-[1.75rem] lg:h-[28rem] lg:rounded-[2rem] xl:h-[30rem]">
               <video
                 className="absolute inset-0 h-full w-full object-cover"
                 src="/videos/hero-loop.mp4"
@@ -164,7 +135,7 @@ export async function LandingView({ news }: { news: ImmigrationNewsItem[] }) {
                 className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(255,255,255,0.09)_0%,transparent_44%)]"
                 aria-hidden
               />
-              <div className="relative z-10 flex flex-col gap-8 px-5 py-9 sm:gap-10 sm:px-7 sm:py-10 lg:flex-row lg:items-center lg:justify-between lg:gap-10 lg:px-10 lg:py-10 xl:gap-14 xl:px-12 xl:py-12">
+              <div className="relative z-10 flex flex-col gap-6 px-5 py-8 sm:gap-8 sm:px-7 sm:py-9 lg:flex-row lg:items-center lg:justify-between lg:gap-10 lg:px-10 lg:py-10 xl:gap-14 xl:px-12 xl:py-12">
                 <div className="max-w-xl flex-1 lg:max-w-[min(36rem,42%)]">
                   <h1 className="mt-1 text-balance text-[28px] font-semibold leading-[1.12] tracking-tight text-white sm:mt-2 sm:text-[36px] lg:text-[44px] xl:text-[48px]">
                     {t("heroTitle")}
@@ -279,59 +250,6 @@ export async function LandingView({ news }: { news: ImmigrationNewsItem[] }) {
               </figcaption>
             </figure>
 
-            <LandingCardStrip
-              ariaLabel={t("a11yRegionTrustLoop")}
-              hint={t("a11yHorizontalScrollHint")}
-              desktopCols={4}
-              className="mt-12"
-            >
-              {(
-                [
-                  { step: "01", titleKey: "stack1Title", descKey: "stack1Desc", Icon: Wallet },
-                  { step: "02", titleKey: "stack2Title", descKey: "stack2Desc", Icon: Layers },
-                  { step: "03", titleKey: "stack3Title", descKey: "stack3Desc", Icon: MapPin },
-                  { step: "04", titleKey: "stack4Title", descKey: "stack4Desc", Icon: CircleDollarSign },
-                ] as const
-              ).map(({ step, titleKey, descKey, Icon }, i) => {
-                const theme = TRUST_LOOP_CARD_THEMES[i] ?? TRUST_LOOP_CARD_THEMES[0];
-                return (
-                  <LandingCardStripItem key={step}>
-                    <div
-                      className={cn(
-                        "group relative flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200/90 p-6 shadow-[0_4px_28px_rgba(15,23,42,0.07)] transition-all duration-300",
-                        "hover:-translate-y-1 hover:border-au-gum/30 hover:shadow-[0_18px_50px_rgba(0,132,61,0.13)]",
-                        theme.surface,
-                      )}
-                    >
-                      <div
-                        className={cn(
-                          "absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r opacity-[0.92]",
-                          theme.bar,
-                        )}
-                        aria-hidden
-                      />
-                      <div className="flex items-start justify-between gap-3">
-                        <span className="inline-flex h-9 min-w-[2.75rem] items-center justify-center rounded-full bg-[#00843D] px-3 text-[12px] font-bold tabular-nums tracking-wide text-white shadow-md ring-2 ring-white/90">
-                          {step}
-                        </span>
-                        <div
-                          className={cn(
-                            "flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl text-[#00843D] shadow-[inset_0_1px_0_rgba(255,255,255,0.85)] ring-1 ring-emerald-200/75",
-                            theme.iconSurface,
-                          )}
-                        >
-                          <Icon className="h-6 w-6" strokeWidth={1.85} aria-hidden />
-                        </div>
-                      </div>
-                      <h3 className="mt-5 font-[family-name:var(--font-outfit)] text-[17px] font-semibold leading-snug tracking-tight text-[#001e00]">
-                        {t(titleKey)}
-                      </h3>
-                      <p className="mt-3 flex-1 text-[14px] leading-relaxed text-[#4d5f56]">{t(descKey)}</p>
-                    </div>
-                  </LandingCardStripItem>
-                );
-              })}
-            </LandingCardStrip>
           </div>
         </section>
 
