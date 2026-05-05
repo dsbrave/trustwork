@@ -26,7 +26,6 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { ImmigrationNewsItem } from "@/lib/immigration-news";
 import { Link } from "@/navigation";
-import { HeroAbstractBackdrop } from "./HeroAbstractBackdrop";
 import { HeroSearch } from "./HeroSearch";
 import { HighlightsSection } from "./HighlightsSection";
 import { LandingCardStrip, LandingCardStripItem } from "./LandingCardStrip";
@@ -34,7 +33,6 @@ import { LandingMobileMenu } from "./LandingMobileMenu";
 import { LanguageSwitcherDesktop, LanguageSwitcherMobile } from "./LanguageSwitcher";
 import { MegaMenuFindWork } from "./MegaMenuFindWork";
 import { MegaMenuPostJob } from "./MegaMenuPostJob";
-import { PartnerTrustRow } from "./PartnerTrustRow";
 
 const newsCats = ["newsCategoryVisas", "newsCategoryWork", "newsCategoryRights"] as const;
 const newsCatIcons = [Globe2, Briefcase, Scale] as const;
@@ -144,25 +142,39 @@ export async function LandingView({ news }: { news: ImmigrationNewsItem[] }) {
       </header>
 
       <main>
-        {/* ——— Hero (abstract, clean) ——— */}
+        {/* ——— Hero (video background, readable overlays) ——— */}
         <section className="border-b border-slate-200/80 bg-[#fafafa]">
           <div className="mx-auto max-w-content px-4 pb-3 pt-4 sm:px-4 sm:pb-4 sm:pt-6 lg:px-6 lg:pb-6 lg:pt-8">
-            <div className="relative min-h-0 overflow-hidden rounded-2xl border border-slate-200/70 bg-white shadow-[0_16px_48px_rgba(15,23,42,0.05)] sm:rounded-[1.75rem] lg:rounded-[2rem]">
-              <HeroAbstractBackdrop />
-              <div className="relative z-10 flex flex-col gap-8 px-5 py-10 sm:gap-10 sm:px-7 sm:py-12 lg:flex-row lg:items-start lg:justify-between lg:gap-12 lg:px-10 lg:py-14 xl:gap-16 xl:px-14">
+            <div className="relative h-[25rem] overflow-hidden rounded-2xl border border-slate-200/70 bg-[#0f1720] shadow-[0_16px_48px_rgba(15,23,42,0.12)] sm:h-[27rem] sm:rounded-[1.75rem] lg:h-[28rem] lg:rounded-[2rem] xl:h-[30rem]">
+              <video
+                className="absolute inset-0 h-full w-full object-cover"
+                src="/videos/hero-loop.mp4"
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="metadata"
+                aria-hidden
+              />
+              <div
+                className="pointer-events-none absolute inset-0 bg-[linear-gradient(95deg,rgba(8,15,20,0.74)_0%,rgba(8,15,20,0.56)_38%,rgba(8,15,20,0.34)_62%,rgba(8,15,20,0.42)_100%)]"
+                aria-hidden
+              />
+              <div
+                className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(255,255,255,0.09)_0%,transparent_44%)]"
+                aria-hidden
+              />
+              <div className="relative z-10 flex flex-col gap-8 px-5 py-9 sm:gap-10 sm:px-7 sm:py-10 lg:flex-row lg:items-center lg:justify-between lg:gap-10 lg:px-10 lg:py-10 xl:gap-14 xl:px-12 xl:py-12">
                 <div className="max-w-xl flex-1 lg:max-w-[min(36rem,42%)]">
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-teal-800/75 sm:text-[11px]">
-                    {t("heroEyebrow")}
-                  </p>
-                  <h1 className="mt-3 text-balance text-[28px] font-semibold leading-[1.12] tracking-tight text-[#1c2620] sm:mt-4 sm:text-[36px] lg:text-[44px] xl:text-[48px]">
+                  <h1 className="mt-1 text-balance text-[28px] font-semibold leading-[1.12] tracking-tight text-white sm:mt-2 sm:text-[36px] lg:text-[44px] xl:text-[48px]">
                     {t("heroTitle")}
                   </h1>
-                  <p className="mt-4 max-w-lg text-[15px] leading-relaxed text-slate-600 sm:mt-5 sm:text-[16px] lg:text-[17px]">
+                  <p className="mt-4 max-w-lg text-[15px] leading-relaxed text-white/90 sm:mt-5 sm:text-[16px] lg:text-[17px]">
                     {t("heroImmersiveLead")}
                   </p>
                 </div>
 
-                <div className="w-full max-w-full rounded-2xl border border-slate-200/90 bg-white/90 p-5 shadow-sm backdrop-blur-md sm:p-6 lg:min-w-0 lg:flex-1 lg:max-w-none lg:shadow-md xl:p-7">
+                <div className="w-full max-w-full p-1 sm:p-2 lg:min-w-0 lg:flex-1 lg:max-w-none">
                   <HeroSearch
                     variant="immersive"
                     tabJobs={t("heroTabJobs")}
@@ -171,18 +183,6 @@ export async function LandingView({ news }: { news: ImmigrationNewsItem[] }) {
                     placeholderTalent={t("heroPlaceholderTalent")}
                     search={t("heroSearch")}
                   />
-                  <div className="mt-6 border-t border-slate-200/80 pt-5">
-                    <PartnerTrustRow
-                      variant="hero"
-                      label={t("heroPartnersLabel")}
-                      logoAlts={{
-                        lumx: t("partnerLumx"),
-                        tafe: t("partnerTafe"),
-                        naati: t("partnerNati"),
-                        exchange: t("heroPartnerExchangeLine"),
-                      }}
-                    />
-                  </div>
                 </div>
               </div>
             </div>
@@ -507,34 +507,6 @@ export async function LandingView({ news }: { news: ImmigrationNewsItem[] }) {
                 </LandingCardStripItem>
               ))}
             </LandingCardStrip>
-          </div>
-        </section>
-
-        {/* ——— Partners ——— */}
-        <section className="border-b border-black/[0.06] bg-white py-14 lg:py-16">
-          <div className="mx-auto max-w-content px-4 lg:px-6">
-            <div className="text-center">
-              <p className="text-[12px] font-semibold uppercase tracking-[0.2em] text-[#7a8a82]">{t("partnersEyebrow")}</p>
-              <h2 className="mt-2 font-[family-name:var(--font-outfit)] text-[24px] font-semibold text-[#001e00] sm:text-[26px]">
-                {t("partnersTitle")}
-              </h2>
-              <p className="mx-auto mt-2 max-w-xl text-[14px] text-[#5e6d64]">{t("partnersSubtitle")}</p>
-            </div>
-            <div className="mx-auto mt-10 max-w-4xl rounded-2xl border border-black/[0.06] bg-[#fafafa] px-5 py-6 shadow-sm sm:px-8 sm:py-7">
-              <PartnerTrustRow
-                variant="section"
-                label={t("heroPartnersLabel")}
-                logoAlts={{
-                  lumx: t("partnerLumx"),
-                  tafe: t("partnerTafe"),
-                  naati: t("partnerNati"),
-                  exchange: t("heroPartnerExchangeLine"),
-                }}
-              />
-            </div>
-            <p className="mx-auto mt-8 max-w-2xl text-center text-[11px] leading-relaxed text-[#8a9a92]">
-              {t("partnersDisclaimer")}
-            </p>
           </div>
         </section>
 

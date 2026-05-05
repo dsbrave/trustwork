@@ -48,7 +48,7 @@ export function HeroSearch({
         className={cn(
           "mb-3 inline-flex max-w-full rounded-full p-1 sm:mb-4",
           immersive
-            ? "border border-slate-200/90 bg-white/60 shadow-sm backdrop-blur-sm"
+            ? "border border-white/25 bg-black/15 shadow-[0_8px_26px_rgba(8,15,20,0.28)] backdrop-blur-sm"
             : "rounded-upwork border border-black/[0.08] bg-white p-1 shadow-search",
         )}
         role="tablist"
@@ -63,8 +63,8 @@ export function HeroSearch({
             "min-h-[44px] shrink-0 whitespace-nowrap rounded-full px-3 py-2 text-[13px] font-semibold transition sm:px-4 sm:text-sm",
             immersive
               ? mode === "jobs"
-                ? "bg-white text-[#1c2620] shadow-sm ring-1 ring-slate-200/80"
-                : "text-[#475569] hover:bg-white/70"
+                ? "bg-white/95 text-[#102025] shadow-sm ring-1 ring-white/40"
+                : "text-white/80 hover:bg-white/15"
               : mode === "jobs"
                 ? "bg-[#1c2620] text-white"
                 : "text-[#001e00]/70 hover:bg-black/[0.04]",
@@ -81,8 +81,8 @@ export function HeroSearch({
             "min-h-[44px] min-w-0 shrink whitespace-nowrap rounded-full px-3 py-2 text-[13px] font-semibold transition sm:px-4 sm:text-sm",
             immersive
               ? mode === "talent"
-                ? "bg-white text-[#1c2620] shadow-sm ring-1 ring-slate-200/80"
-                : "text-[#475569] hover:bg-white/70"
+                ? "bg-white/95 text-[#102025] shadow-sm ring-1 ring-white/40"
+                : "text-white/80 hover:bg-white/15"
               : mode === "talent"
                 ? "bg-[#1c2620] text-white"
                 : "text-[#001e00]/70 hover:bg-black/[0.04]",
@@ -110,10 +110,11 @@ export function HeroSearch({
             onChange={(e) => setQ(e.target.value)}
             placeholder={placeholder}
             autoComplete="off"
+            style={immersive ? { color: "#0f172a", WebkitTextFillColor: "#0f172a" } : undefined}
             className={cn(
               "h-full min-h-[48px] w-full text-[15px] outline-none transition sm:min-h-[52px]",
               immersive
-                ? "rounded-full border border-slate-200/90 bg-white px-4 text-[#1c2620] shadow-inner ring-1 ring-white placeholder:text-slate-400 focus:border-teal-600/25 focus:ring-2 focus:ring-teal-600/20 sm:pl-5"
+                ? "rounded-full border border-white/65 bg-white px-4 text-[#0f172a] caret-[#0f172a] shadow-[0_6px_18px_rgba(8,15,20,0.2)] placeholder:text-slate-500 focus:border-white focus:ring-2 focus:ring-white/80 sm:pl-5 [-webkit-text-fill-color:#0f172a]"
                 : "rounded-upwork border border-black/[0.12] bg-white pl-12 pr-4 text-[#001e00] shadow-search ring-au-gum/30 placeholder:text-[#5e6d64]/80 focus:border-au-gumbright focus:ring-2",
             )}
           />
@@ -123,7 +124,7 @@ export function HeroSearch({
           className={cn(
             "inline-flex min-h-[48px] shrink-0 items-center justify-center gap-2 rounded-full px-6 text-[15px] font-semibold transition focus-visible:outline focus-visible:ring-2 focus-visible:ring-offset-2 sm:min-h-[52px] sm:px-8",
             immersive
-              ? "bg-[#157f3c] text-white shadow-sm hover:bg-[#136e34] focus-visible:ring-teal-700/40 focus-visible:ring-offset-[#f4f6f5]"
+              ? "bg-[#10823e] text-white shadow-[0_8px_22px_rgba(0,0,0,0.28)] hover:bg-[#0f7538] focus-visible:ring-teal-700/40 focus-visible:ring-offset-[#1f2933]"
               : "rounded-upwork bg-au-gumbright text-white shadow-sm hover:bg-[#0e7700] focus-visible:ring-au-gum focus-visible:ring-offset-2",
           )}
         >
