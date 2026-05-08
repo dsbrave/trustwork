@@ -168,7 +168,11 @@
     "communityTeaserTitle": "Visas, shifts, and peer advice — in one place",
     "communityTeaserDesc": "Discussion groups for hospitality, construction, regional work, and rights — rolling out on TrustWork so migrants aren’t alone in the inbox.",
     "communityTeaserCta": "See Community preview",
-    "footerCommunity": "Community"
+    "footerCommunity": "Community",
+    "heroTalentDateLabel": "Date needed",
+    "heroTalentDateMissing": "Please select the date you need the worker.",
+    "heroTalentAlertSuccess": "Talent alerts sent to matching workers",
+    "heroTalentAlertError": "Could not send talent alerts right now. Please try again."
   },
   "Jobs": {
     "title": "Browse jobs",

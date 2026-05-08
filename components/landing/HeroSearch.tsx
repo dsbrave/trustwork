@@ -11,6 +11,11 @@ type Props = {
   placeholderJobs: string;
   placeholderTalent: string;
   search: string;
+  talentDateLabel?: string;
+  talentDateMissing?: string;
+  talentAlertSuccess?: string;
+  talentAlertError?: string;
+  talentRoleOptions?: Array<{ value: string; label: string }>;
   /** Light abstract hero: soft borders, muted greens/teals */
   variant?: "default" | "immersive";
 };
@@ -21,23 +26,56 @@ export function HeroSearch({
   placeholderJobs,
   placeholderTalent,
   search,
+  talentAlertSuccess,
+  talentAlertError,
   variant = "default",
 }: Props) {
   const [mode, setMode] = useState<"jobs" | "talent">("jobs");
   const [q, setQ] = useState("");
+  const [jobTypes, setJobTypes] = useState<Array<"part-time" | "full-time" | "casual">>([]);
+  const [talentTypes, setTalentTypes] = useState<Array<"part-time" | "full-time" | "casual">>([]);
+  const [submittingTalentAlert, setSubmittingTalentAlert] = useState(false);
   const router = useRouter();
 
   const placeholder = mode === "jobs" ? placeholderJobs : placeholderTalent;
 
   const onSubmit = useCallback(
-    (e: React.FormEvent) => {
+    async (e: React.FormEvent) => {
       e.preventDefault();
+      if (mode === "talent") {
+        try {
+          setSubmittingTalentAlert(true);
+          const res = await fetch("/api/talent-alert", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              query: q.trim(),
+              employmentType: talentTypes[0] ?? "",
+              employmentTypes: talentTypes,
+            }),
+          });
+          const data = (await res.json()) as { matchedCount?: number; error?: string };
+          if (!res.ok) {
+            throw new Error(data?.error ?? "Unable to send notifications.");
+          }
+          alert((talentAlertSuccess ?? "Talent alert sent.") + ` (${data.matchedCount ?? 0})`);
+        } catch (err) {
+          const msg = err instanceof Error ? err.message : talentAlertError ?? "Something went wrong.";
+          alert(msg);
+        } finally {
+          setSubmittingTalentAlert(false);
+        }
+        return;
+      }
       const params = new URLSearchParams();
       if (q.trim()) params.set("q", q.trim());
       params.set("mode", mode);
+      if (mode === "jobs" && jobTypes.length > 0) {
+        params.set("employment", jobTypes.join(","));
+      }
       router.push(`/jobs?${params.toString()}`);
     },
-    [q, mode, router],
+    [jobTypes, mode, q, router, talentAlertError, talentAlertSuccess, talentTypes],
   );
 
   const immersive = variant === "immersive";
@@ -92,6 +130,76 @@ export function HeroSearch({
         </button>
       </div>
 
+      {mode === "talent" && (
+        <>
+          <div className={cn("mb-2 flex flex-wrap gap-2", immersive ? "text-white" : "text-[#1c2620]")}>
+            {[
+              { value: "part-time" as const, label: "Part-time" },
+              { value: "full-time" as const, label: "Full-time" },
+              { value: "casual" as const, label: "Casual" },
+            ].map((opt) => (
+              (() => {
+                const active = talentTypes.includes(opt.value);
+                return (
+                  <button
+                    key={opt.value}
+                    type="button"
+                    onClick={() =>
+                      setTalentTypes((prev) =>
+                        prev.includes(opt.value) ? prev.filter((x) => x !== opt.value) : [...prev, opt.value],
+                      )
+                    }
+                    className={cn(
+                      "rounded-full border px-3 py-1 text-[11px] font-semibold transition",
+                      active
+                        ? "border-[#10823e] bg-[#10823e] text-white"
+                        : immersive
+                          ? "border-white/35 bg-black/20 text-white/90 hover:bg-black/30"
+                          : "border-slate-300 bg-white text-slate-700 hover:bg-slate-50",
+                    )}
+                  >
+                    {labelWithCheck(opt.label, active)}
+                  </button>
+                );
+              })()
+            ))}
+          </div>
+
+        </>
+      )}
+      {mode === "jobs" && (
+        <div className={cn("mb-2 flex flex-wrap gap-2", immersive ? "text-white" : "text-[#1c2620]")}>
+          {[
+            { value: "part-time" as const, label: "Part-time" },
+            { value: "full-time" as const, label: "Full-time" },
+            { value: "casual" as const, label: "Casual" },
+          ].map((opt) => {
+            const active = jobTypes.includes(opt.value);
+            return (
+              <button
+                key={opt.value}
+                type="button"
+                onClick={() =>
+                  setJobTypes((prev) =>
+                    prev.includes(opt.value) ? prev.filter((x) => x !== opt.value) : [...prev, opt.value],
+                  )
+                }
+                className={cn(
+                  "rounded-full border px-3 py-1 text-[11px] font-semibold transition",
+                  active
+                    ? "border-[#10823e] bg-[#10823e] text-white"
+                    : immersive
+                      ? "border-white/35 bg-black/20 text-white/90 hover:bg-black/30"
+                      : "border-slate-300 bg-white text-slate-700 hover:bg-slate-50",
+                )}
+              >
+                {labelWithCheck(opt.label, active)}
+              </button>
+            );
+          })}
+        </div>
+      )}
+
       <form
         onSubmit={onSubmit}
         className="flex flex-col gap-2.5 sm:flex-row sm:items-stretch sm:gap-3"
@@ -121,11 +229,14 @@ export function HeroSearch({
         </div>
         <button
           type="submit"
+          disabled={submittingTalentAlert}
           className={cn(
-            "inline-flex min-h-[48px] shrink-0 items-center justify-center gap-2 rounded-full px-6 text-[15px] font-semibold transition focus-visible:outline focus-visible:ring-2 focus-visible:ring-offset-2 sm:min-h-[52px] sm:px-8",
+            "inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full px-6 text-[15px] font-semibold transition focus-visible:outline focus-visible:ring-2 focus-visible:ring-offset-2 sm:min-h-[52px] sm:px-8",
+            "shrink-0",
             immersive
               ? "bg-[#10823e] text-white shadow-[0_8px_22px_rgba(0,0,0,0.28)] hover:bg-[#0f7538] focus-visible:ring-teal-700/40 focus-visible:ring-offset-[#1f2933]"
               : "rounded-upwork bg-au-gumbright text-white shadow-sm hover:bg-[#0e7700] focus-visible:ring-au-gum focus-visible:ring-offset-2",
+            submittingTalentAlert && "cursor-not-allowed opacity-70",
           )}
         >
           <Search
@@ -137,4 +248,8 @@ export function HeroSearch({
       </form>
     </div>
   );
+}
+
+function labelWithCheck(label: string, active: boolean) {
+  return active ? `✓ ${label}` : label;
 }

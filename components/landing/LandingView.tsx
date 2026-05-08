@@ -24,6 +24,7 @@ import type { ImmigrationNewsItem } from "@/lib/immigration-news";
 import { Link } from "@/navigation";
 import { HeroSearch } from "./HeroSearch";
 import { HighlightsSection } from "./HighlightsSection";
+import { HeroBackgroundVideo } from "./HeroBackgroundVideo";
 import { LandingCardStrip, LandingCardStripItem } from "./LandingCardStrip";
 import { LandingMobileMenu } from "./LandingMobileMenu";
 import { LanguageSwitcherDesktop, LanguageSwitcherMobile } from "./LanguageSwitcher";
@@ -117,16 +118,7 @@ export async function LandingView({ news }: { news: ImmigrationNewsItem[] }) {
         <section className="border-b border-slate-200/80 bg-[#fafafa]">
           <div className="mx-auto max-w-content px-4 pb-3 pt-4 sm:px-4 sm:pb-4 sm:pt-6 lg:px-6 lg:pb-6 lg:pt-8">
             <div className="relative min-h-[30rem] overflow-hidden rounded-2xl border border-slate-200/70 bg-[#0f1720] shadow-[0_16px_48px_rgba(15,23,42,0.12)] sm:min-h-[32rem] sm:rounded-[1.75rem] lg:h-[28rem] lg:rounded-[2rem] xl:h-[30rem]">
-              <video
-                className="absolute inset-0 h-full w-full object-cover"
-                src="/videos/hero-loop.mp4"
-                autoPlay
-                loop
-                muted
-                playsInline
-                preload="metadata"
-                aria-hidden
-              />
+              <HeroBackgroundVideo />
               <div
                 className="pointer-events-none absolute inset-0 bg-[linear-gradient(95deg,rgba(8,15,20,0.74)_0%,rgba(8,15,20,0.56)_38%,rgba(8,15,20,0.34)_62%,rgba(8,15,20,0.42)_100%)]"
                 aria-hidden
@@ -153,6 +145,11 @@ export async function LandingView({ news }: { news: ImmigrationNewsItem[] }) {
                     placeholderJobs={t("heroPlaceholderJobs")}
                     placeholderTalent={t("heroPlaceholderTalent")}
                     search={t("heroSearch")}
+                    talentDateLabel={t("heroTalentDateLabel")}
+                    talentDateMissing={t("heroTalentDateMissing")}
+                    talentAlertSuccess={t("heroTalentAlertSuccess")}
+                    talentAlertError={t("heroTalentAlertError")}
+                    talentRoleOptions={categories.map((c) => ({ value: c.slug, label: t(c.key) }))}
                   />
                 </div>
               </div>

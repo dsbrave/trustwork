@@ -18,7 +18,17 @@ export default async function JobsPage({ searchParams }: Props) {
     typeof rawCat === "string" ? rawCat : Array.isArray(rawCat) ? rawCat[0] : undefined;
   const rawMode = searchParams.mode;
   const mode = typeof rawMode === "string" ? rawMode : Array.isArray(rawMode) ? rawMode[0] : undefined;
-  const jobs = filterMockJobs({ q, category });
+  const rawEmployment = searchParams.employment;
+  const employmentTypes = (
+    typeof rawEmployment === "string"
+      ? rawEmployment.split(",")
+      : Array.isArray(rawEmployment)
+        ? rawEmployment
+        : []
+  )
+    .map((x) => x.trim().toLowerCase())
+    .filter(Boolean);
+  const jobs = filterMockJobs({ q, category, employmentTypes });
 
   const cats = [
     { slug: "all", label: t("allCategories") },
@@ -38,6 +48,18 @@ export default async function JobsPage({ searchParams }: Props) {
     const p = new URLSearchParams();
     if (q) p.set("q", q);
     if (c !== "all") p.set("category", c);
+    if (employmentTypes.length > 0) p.set("employment", employmentTypes.join(","));
+    const s = p.toString();
+    return s ? `/jobs?${s}` : "/jobs";
+  };
+  const buildEmploymentHref = (employment: string) => {
+    const p = new URLSearchParams();
+    if (q) p.set("q", q);
+    if (category) p.set("category", category);
+    const next = employmentTypes.includes(employment)
+      ? employmentTypes.filter((x) => x !== employment)
+      : [...employmentTypes, employment];
+    if (next.length > 0) p.set("employment", next.join(","));
     const s = p.toString();
     return s ? `/jobs?${s}` : "/jobs";
   };
@@ -69,6 +91,31 @@ export default async function JobsPage({ searchParams }: Props) {
                         : "text-[#5e6d64] hover:bg-black/[0.04]"
                     }`}
                   >
+                    {label}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+          <p className="mt-6 text-[13px] font-semibold text-[#001e00]">Employment type</p>
+          <ul className="mt-3 space-y-1">
+            {[
+              { slug: "part-time", label: "Part-time" },
+              { slug: "full-time", label: "Full-time" },
+              { slug: "casual", label: "Casual" },
+            ].map(({ slug, label }) => {
+              const active = employmentTypes.includes(slug);
+              return (
+                <li key={slug}>
+                  <Link
+                    href={buildEmploymentHref(slug)}
+                    className={`block rounded-md px-2 py-1.5 text-[14px] ${
+                      active
+                        ? "bg-au-mist font-semibold text-au-gum"
+                        : "text-[#5e6d64] hover:bg-black/[0.04]"
+                    }`}
+                  >
+                    {active ? "✓ " : ""}
                     {label}
                   </Link>
                 </li>
@@ -123,6 +170,9 @@ export default async function JobsPage({ searchParams }: Props) {
                       <p className="mt-1 flex items-center gap-2 text-[14px] text-[#5e6d64]">
                         <MapPin className="h-4 w-4 shrink-0" aria-hidden />
                         {job.location}
+                      </p>
+                      <p className="mt-1 text-[12px] font-semibold uppercase tracking-wide text-[#10823e]">
+                        {job.employmentType}
                       </p>
                       <div className="mt-3 flex flex-wrap gap-2">
                         {job.visaTags.map((tag) => (

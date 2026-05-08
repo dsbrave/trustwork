@@ -168,7 +168,11 @@
     "communityTeaserTitle": "Vistos, turnos e conselhos entre pares",
     "communityTeaserDesc": "Grupos sobre hospitalidade, construção, regional e direitos — em rollout na TrustWork para migrantes não ficarem sós na caixa de entrada.",
     "communityTeaserCta": "Ver pré-visualização da comunidade",
-    "footerCommunity": "Comunidade"
+    "footerCommunity": "Comunidade",
+    "heroTalentDateLabel": "Date needed",
+    "heroTalentDateMissing": "Please select the date you need the worker.",
+    "heroTalentAlertSuccess": "Talent alerts sent to matching workers",
+    "heroTalentAlertError": "Could not send talent alerts right now. Please try again."
   },
   "Jobs": {
     "title": "Explorar vagas",

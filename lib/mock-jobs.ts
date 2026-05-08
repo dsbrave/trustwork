@@ -3,6 +3,7 @@ export type MockJob = {
   title: string;
   company: string;
   location: string;
+  employmentType: "part-time" | "full-time" | "casual";
   hourly: number;
   visaTags: string[];
   sponsorshipAvailable: boolean;
@@ -18,6 +19,7 @@ export const MOCK_JOBS: MockJob[] = [
     title: "Kitchen Hand — CBD venue",
     company: "Harbour Bistro Pty Ltd",
     location: "Sydney NSW",
+    employmentType: "part-time",
     hourly: 32.5,
     visaTags: ["Student visa", "WHV"],
     sponsorshipAvailable: false,
@@ -30,6 +32,7 @@ export const MOCK_JOBS: MockJob[] = [
     title: "Commercial Cleaner — night shift",
     company: "Pacific Facilities",
     location: "Melbourne VIC",
+    employmentType: "casual",
     hourly: 38,
     visaTags: ["All eligible visas"],
     sponsorshipAvailable: false,
@@ -42,6 +45,7 @@ export const MOCK_JOBS: MockJob[] = [
     title: "Construction Labourer — White Card required",
     company: "Southern Cross Builders",
     location: "Brisbane QLD",
+    employmentType: "full-time",
     hourly: 42,
     visaTags: ["PR", "Citizen"],
     sponsorshipAvailable: true,
@@ -54,6 +58,7 @@ export const MOCK_JOBS: MockJob[] = [
     title: "Aged Care Assistant — RSA bonus",
     company: "Coastal Care Network",
     location: "Adelaide SA",
+    employmentType: "part-time",
     hourly: 35,
     visaTags: ["Student visa", "PR"],
     sponsorshipAvailable: false,
@@ -66,6 +71,7 @@ export const MOCK_JOBS: MockJob[] = [
     title: "IT Support — casual contract",
     company: "Red Earth Tech",
     location: "Perth WA (hybrid)",
+    employmentType: "casual",
     hourly: 55,
     visaTags: ["Citizen", "PR"],
     sponsorshipAvailable: false,
@@ -78,6 +84,7 @@ export const MOCK_JOBS: MockJob[] = [
     title: "Retail Assistant — weekend",
     company: "Outback Retail Group",
     location: "Darwin NT",
+    employmentType: "full-time",
     hourly: 30,
     visaTags: ["WHV", "Student visa"],
     sponsorshipAvailable: false,
@@ -90,6 +97,7 @@ export const MOCK_JOBS: MockJob[] = [
 export function filterMockJobs(params: {
   q?: string;
   category?: string;
+  employmentTypes?: string[];
 }): MockJob[] {
   let list = [...MOCK_JOBS];
   const q = params.q?.trim().toLowerCase();
@@ -103,6 +111,10 @@ export function filterMockJobs(params: {
   }
   if (params.category && params.category !== "all") {
     list = list.filter((j) => j.category === params.category);
+  }
+  if (params.employmentTypes && params.employmentTypes.length > 0) {
+    const allowed = new Set(params.employmentTypes);
+    list = list.filter((j) => allowed.has(j.employmentType));
   }
   return list;
 }
